@@ -1,29 +1,30 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css';
-import {createBrowserRouter,RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Home from './routes/Home';
-import GameDetail from './routes/GameDetail';
-import ApiData from './components/ApiData';
+import GameDetailView from './routes/GameDetailView';
+import LoginView from './routes/LoginView';
+import RegisterView from './routes/RegisterView';
 
 const router = createBrowserRouter([
   {
-    path:'/',
+    path: '/',
     element: <Home />
   },
   {
-    path:'/apidata',
-    element: <ApiData />,
-  },
-  {
-    path:'/contact',
-    element: <h1> Hola </h1>,
+    path: '/login',
+    element: <LoginView />,
   },
   {
     path: '/game/:id',
-    element: <GameDetail />,
-  } 
+    element: <GameDetailView />,
+  },
+  {
+    path: '/register',
+    element: <RegisterView />,
+  }
 ])
 
 

@@ -1,15 +1,15 @@
 import Header from '../components/HeaderComponent';
 import Footer from '../components/Footer';
-import GameList from '../components/GameList';
+import GameDetail from '../components/GameDetail';
 
-function Home() {
+function GameDetailView() {
   return (
     <div>
       <Header/>
-      <GameList />
+      <GameDetail />
       <Footer/>
     </div>
   );
 }
 
-export default Home;
+export default GameDetailView;

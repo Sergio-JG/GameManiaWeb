@@ -1,12 +1,12 @@
 import Header from '../components/HeaderComponent';
 import Footer from '../components/Footer';
-import GameList from '../components/GameList';
+import GameDetail from '../components/GameDetail';
 
 function Home() {
   return (
     <div>
       <Header/>
-      <GameList />
+      <GameDetail />
       <Footer/>
     </div>
   );

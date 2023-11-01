@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import { Link } from 'react-router-dom';
 
 import logo from '../images/logo.png';
 
@@ -32,13 +33,13 @@ const Header = () => {
       <Toolbar>
         <Grid container alignItems="center">
         <Grid item xs={4}>
-            <a href="./index.php">
+          <Link to={`/`}>
               <img
-                src={logo} // Use the imported image
+                src={logo}
                 alt="Logo"
                 style={{ height: '100px', marginRight: '10px' }}
               />
-            </a>
+            </Link> 
           </Grid>
           <Grid item xs={4}>
             <div style={searchStyles}>
@@ -55,14 +56,18 @@ const Header = () => {
           <Grid item xs={4}>
             <ul style={{ listStyle: 'none', display: 'flex', justifyContent: 'center' }}>
               <li>
-                <Button variant="outlined" style={iconStyles}>
-                  Iniciar Sesión
-                </Button>
+                <Link to={`/login`}>
+                  <Button variant="outlined" style={iconStyles}>
+                    Iniciar Sesión
+                  </Button>
+                </Link>           
               </li>
               <li>
-                <Button variant="outlined" style={iconStyles}>
-                  Registrarse
-                </Button>
+                <Link to={`/register`}>
+                  <Button variant="outlined" style={iconStyles}>
+                   Registrarse
+                  </Button>
+                </Link> 
               </li>
             </ul>
           </Grid>

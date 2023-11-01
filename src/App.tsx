@@ -1,6 +1,6 @@
 import './App.css';
-import ApiData from './components/ApiData';
-import Header from './components/Header';
+import ApiData from './components/GameList';
+import Header from './components/HeaderComponent';
 import Footer from './components/Footer';
 function App() {
   return (
