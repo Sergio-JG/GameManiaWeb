@@ -1,14 +1,19 @@
 import './App.css';
-import ApiData from './components/GameList';
-import Header from './components/HeaderComponent';
-import Footer from './components/Footer';
+import { Route, Routes } from 'react-router-dom';
+
+import Home from './routes/Home';
+import Login from './routes/LoginView';
+import GameDetailView from './routes/GameDetailView';
+
 function App() {
   return (
     <div>
-      <Header/>
-      <ApiData />
-      <Footer/>
-    </div>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/game/:id' element={<GameDetailView />} />
+      </Routes>
+    </div >
   );
 }
 

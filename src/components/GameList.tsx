@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
+import Button from '@mui/material/Button';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
@@ -8,22 +9,27 @@ import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom';
 import imagenJuego from '../images/default.jpg';
 
+interface Game {
+  gameId: string;
+  title: string;
+  price: number;
+  description: string;
+  releaseDate: string;
+  numberOfSales: number;
+  totalScore: number;
+  genres: any[];
+  platforms: any[];
+  reviews: any[];
+}
+
 function GameList() {
 
-  interface Game {
-    gameId: string;
-    title: string;
-    price: number;
-    description: string;
-    releaseDate: string;
-    numberOfSales: number;
-    totalScore: number;
-    genres: any[];
-    platforms: any[];
-    reviews: any[];
-  }
-
   const [games, setGames] = useState<Game[]>([]);
+  const [cart, setCart] = useState<Game[]>([]);
+
+  const addToCart = (game: Game) => {
+    setCart([...cart, game]);
+  };
 
   useEffect(() => {
     fetchData();
@@ -33,25 +39,17 @@ function GameList() {
     try {
       const response = await fetch('http://localhost:8080/game');
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('ERROR');
       }
       const result = await response.json();
       setGames(result);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('ERROR fetching data:', error);
     }
-  }
+  };
 
   const offerGames = games.filter(game => {
     return game.price < 20;
-  });
-
-  const popularGames = games.filter(game => {
-    return game.totalScore > 8;
-  });
-
-  const saleGames = games.filter(game => {
-    return game.price !== undefined;
   });
 
   return (
@@ -83,6 +81,13 @@ function GameList() {
                 <Typography variant="h3" color="textSecondary">
                   {game.price}
                 </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => addToCart(game)}
+                >
+                  Add to Cart
+                </Button>
               </CardContent>
             </Card>
           </Grid>
@@ -90,13 +95,14 @@ function GameList() {
       </Grid>
 
       {/* Popular Games */}
+      {/* Offer Games */}
       <Typography variant="h4" gutterBottom>
-        Popular Games
+        Offer Games
       </Typography>
       <Grid container spacing={2}>
-        {popularGames.map((game, index) => (
+        {offerGames.map((game, index) => (
           <Grid item key={index} xs={12} sm={6} md={4}>
-            {/* Game Card for Popular Games */}
+            {/* Game Card for Offer Games */}
             <Card>
               <Link to={`/game/${game.gameId}`}>
                 <CardMedia
@@ -113,7 +119,16 @@ function GameList() {
                 <Typography variant="body2" color="textSecondary">
                   {game.description}
                 </Typography>
-                {/* Any additional game information to be displayed */}
+                <Typography variant="h3" color="textSecondary">
+                  {game.price}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => addToCart(game)}
+                >
+                  Add to Cart
+                </Button>
               </CardContent>
             </Card>
           </Grid>
@@ -121,13 +136,14 @@ function GameList() {
       </Grid>
 
       {/* Games on Sale */}
+      {/* Offer Games */}
       <Typography variant="h4" gutterBottom>
-        Games on Sale
+        Offer Games
       </Typography>
       <Grid container spacing={2}>
-        {saleGames.map((game, index) => (
+        {offerGames.map((game, index) => (
           <Grid item key={index} xs={12} sm={6} md={4}>
-            {/* Game Card for Games on Sale */}
+            {/* Game Card for Offer Games */}
             <Card>
               <Link to={`/game/${game.gameId}`}>
                 <CardMedia
@@ -144,7 +160,16 @@ function GameList() {
                 <Typography variant="body2" color="textSecondary">
                   {game.description}
                 </Typography>
-                {/* Any additional game information to be displayed */}
+                <Typography variant="h3" color="textSecondary">
+                  {game.price}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => addToCart(game)}
+                >
+                  Add to Cart
+                </Button>
               </CardContent>
             </Card>
           </Grid>

@@ -3,11 +3,12 @@ import Footer from '../components/Footer';
 import GameList from '../components/GameList';
 
 function Home() {
+
   return (
     <div>
-      <Header/>
+      <Header />
       <GameList />
-      <Footer/>
+      <Footer />
     </div>
   );
 }
