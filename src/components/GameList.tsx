@@ -8,32 +8,17 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom';
 import imagenJuego from '../images/default.jpg';
+import GameInterface from '../interfaces/GameInterface'
 
-interface Game {
-  gameId: string;
-  title: string;
-  price: number;
-  description: string;
-  releaseDate: string;
-  numberOfSales: number;
-  totalScore: number;
-  genres: any[];
-  platforms: any[];
-  reviews: any[];
+interface GameListComponentProps {
+  addToCart: (game: GameInterface) => void;
 }
 
-function GameList() {
+const GameList: React.FC<GameListComponentProps> = ({ addToCart }) => {
 
-  const [games, setGames] = useState<Game[]>([]);
-  const [cart, setCart] = useState<Game[]>([]);
+  const [games, setGames] = useState<GameInterface[]>([]);
 
-  const addToCart = (game: Game) => {
-    setCart([...cart, game]);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useEffect(() => { fetchData(); }, []);
 
   const fetchData = async () => {
     try {

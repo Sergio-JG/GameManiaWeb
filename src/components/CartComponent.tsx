@@ -1,27 +1,51 @@
-import { Drawer, List, ListItem, ListItemText, ListItemAvatar, Avatar, Button, Divider } from '@mui/material';
+import { Avatar, Button, Divider, Drawer, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 import ShirtImage from '../images/default.jpg';
-import { useState } from 'react';
 
-
+import GameInterface from '../interfaces/GameInterface';
 interface CartComponentProps {
     open: boolean;
     onClose: () => void;
+    cart: GameInterface[];
 }
 
-const CartComponent: React.FC<CartComponentProps> = ({ open, onClose }) => {
-
-    interface Game {
-        gameId: string;
-        title: string;
-        price: number;
-        description: string;
-    }
-
-    const [items, setItems] = useState<Game[]>([]);
+const CartComponent: React.FC<CartComponentProps> = ({ cart, open, onClose }) => {
 
     const getTotalPrice = () => {
-        return items.reduce((acc, item) => acc + item.price, 0);
+        return cart.reduce((acc, item) => acc + item.price, 0);
     };
+
+    const drawerHeight = 300 + cart.length * 80;
+
+    if (cart.length === 0) {
+
+        return (
+            <Drawer
+
+                open={open}
+                onClose={onClose}
+                anchor='right'
+                PaperProps={{
+                    sx: {
+                        width: 400,
+                        background: 'white',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: `${drawerHeight}px`,
+                    }
+                }}>
+
+                <div style={{ textAlign: 'center', margin: '16px' }}>
+                    <h1>Mi cesta</h1>
+                </div>
+
+                <Divider />
+
+                <div style={{ textAlign: 'center', marginTop: '25px' }}>
+                    <h3>No hay elementos en la cesta</h3>
+                </div>
+            </Drawer>
+        );
+    }
 
     return <Drawer
 
@@ -30,43 +54,57 @@ const CartComponent: React.FC<CartComponentProps> = ({ open, onClose }) => {
         anchor='right'
         PaperProps={{
             sx: {
-                width: 500,
+                width: 400,
                 background: 'white',
                 display: 'flex',
                 flexDirection: 'column',
-                height: `500px`,
+                height: `${drawerHeight}px`,
             }
         }}>
 
-        <div style={{ textAlign: 'center', margin: '16px' }}>
-            <h1>Mi cesta</h1>
+        <div style={{ textAlign: 'center', margin: '15px' }}>
+            <h1>Mi cesta ({cart.length})</h1>
         </div>
-        <div style={{ textAlign: 'center', marginTop: '25px' }}>
-            <h3>No hay elementos en la cesta</h3>
-        </div>
+
+        <Divider />
+
         <List sx={{ flexGrow: 1 }}>
-            {items.map((item, index) => (
+            {cart.map((item, index) => (
                 <div key={index}>
                     <ListItem>
                         <ListItemAvatar>
                             <Avatar src={ShirtImage} />
                         </ListItemAvatar>
-                        <ListItemText
-                            primary={item.title}
-                            secondary={`Price: $${item.price} - ${item.description}`}
-                        />
+                        <ListItemText primary={item.title} />
+                        <Typography variant="h6">{`$${item.price}`}</Typography>
                     </ListItem>
                 </div>
             ))}
         </List>
-        <Divider style={{ marginTop: '8px' }} />
-        <div style={{ padding: '8px' }}>
-            <h3>Total: ${getTotalPrice()}</h3>
-            <Button variant="contained" color="primary" fullWidth>
-                Confirm Purchase
-            </Button>
-        </div>
-    </Drawer>
+
+        <Divider />
+
+        <Grid container justifyContent="space-between" padding={2}>
+            <Grid item xs={6}>
+                <h3>Subtotal:</h3>
+            </Grid>
+            <Grid item xs={6} sx={{ textAlign: 'right' }}>
+                <h3>${getTotalPrice()}</h3>
+            </Grid>
+        </Grid>
+
+
+        <Grid container justifyContent="space-between" padding={2}>
+            <Grid item>
+                <Button variant="outlined" color="secondary"> Ver cesta </Button>
+            </Grid>
+            <Grid item>
+                <Button variant="contained" color="secondary"> Confirmar compra </Button>
+            </Grid>
+        </Grid>
+
+
+    </Drawer >
 };
 
 export default CartComponent;

@@ -1,15 +1,9 @@
-import Header from '../components/HeaderComponent';
-import Footer from '../components/Footer';
-import GameDetail from '../components/GameDetail';
+import RegisterComponent from '../components/RegisterComponent';
 
-function Home() {
+function Register() {
   return (
-    <div>
-      <Header/>
-      <GameDetail />
-      <Footer/>
-    </div>
+    <RegisterComponent />
   );
 }
 
-export default Home;
+export default Register;
