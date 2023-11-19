@@ -1,4 +1,4 @@
-import Header from '../components/HeaderComponent';
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 import GameList from '../components/GameList';
 import { useState } from 'react';
@@ -12,7 +12,21 @@ function Home() {
   const [cart, setCart] = useState<GameInterface[]>([]);
 
   const addToCart = (game: GameInterface) => {
-    setCart([...cart, game]);
+    const existingGameIndex = cart.findIndex((item) => item.gameId === game.gameId);
+    if (existingGameIndex !== -1) {
+      const updatedCart = cart.map((item, index) => {
+        if (index === existingGameIndex) {
+          return {
+            ...item,
+            quantity: item.quantity + 1
+          };
+        }
+        return item;
+      });
+      setCart(updatedCart);
+    } else {
+      setCart([...cart, { ...game, quantity: 1 }]);
+    }
   };
 
   const handleCartOpen = () => {
@@ -24,12 +38,7 @@ function Home() {
   };
 
   return (
-    <div>
-      <Header handleCartOpen={handleCartOpen} />
-      <CartComponent cart={cart} open={isCartOpen} onClose={handleCartClose} />
-      <GameList addToCart={addToCart} />
-      <Footer />
-    </div>
+    <><Header handleCartOpen={handleCartOpen} /><CartComponent cart={cart} open={isCartOpen} onClose={handleCartClose} /><GameList addToCart={addToCart} /><Footer /></>
   );
 }
 

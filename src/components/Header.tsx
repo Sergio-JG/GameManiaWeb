@@ -7,7 +7,7 @@ import logo from '../images/logo.png';
 const headerStyles = {
   background: 'black',
   color: 'white',
-  padding: '8px',
+  padding: 10,
 };
 
 const searchStyles = {

@@ -8,6 +8,7 @@ import GameDetailView from './routes/GameDetailView';
 import Home from './routes/Home';
 import Login from './routes/LoginView';
 import RegisterView from './routes/RegisterView';
+import BuyPlatform from './routes/buyPlatform';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/game/:id' element={<GameDetailView />} />
           <Route path='/register' element={<RegisterView />} />
+          <Route path='/buyPlatform' element={<BuyPlatform />} />
         </Routes>
       </div>
     </ThemeProvider>

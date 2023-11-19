@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, Drawer, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import { Avatar, Button, Divider, Drawer, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 import ShirtImage from '../images/default.jpg';
 
 import GameInterface from '../interfaces/GameInterface';
@@ -11,7 +11,7 @@ interface CartComponentProps {
 const CartComponent: React.FC<CartComponentProps> = ({ cart, open, onClose }) => {
 
     const getTotalPrice = () => {
-        return cart.reduce((acc, item) => acc + item.price, 0);
+        return cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
     };
 
     const drawerHeight = 300 + cart.length * 80;
@@ -31,8 +31,8 @@ const CartComponent: React.FC<CartComponentProps> = ({ cart, open, onClose }) =>
                         display: 'flex',
                         flexDirection: 'column',
                         height: `${drawerHeight}px`,
-                        maxHeight: '80vh', // Maximum height of the drawer
-                        overflowY: 'auto', // Enable vertical scroll
+                        maxHeight: '80vh',
+                        overflowY: 'auto',
                     }
                 }}>
 
@@ -80,6 +80,7 @@ const CartComponent: React.FC<CartComponentProps> = ({ cart, open, onClose }) =>
                         </ListItemAvatar>
                         <ListItemText primary={item.title} />
                         <Typography variant="h6">{`$${item.price}`}</Typography>
+                        <Typography variant="body1">{`(${item.quantity})`}</Typography>
                     </ListItem>
                 </div>
             ))}
@@ -103,7 +104,7 @@ const CartComponent: React.FC<CartComponentProps> = ({ cart, open, onClose }) =>
                 </Button>
             </Grid>
             <Grid item>
-                <Button variant="contained" href="/confirmPurchaseView">
+                <Button variant="contained" href="/buyPlatform">
                     Confirmar Compra
                 </Button>
             </Grid>
