@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, Drawer, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import { Avatar, Button, Divider, Drawer, Grid, Link, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 import ShirtImage from '../images/default.jpg';
 
 import GameInterface from '../interfaces/GameInterface';
@@ -31,6 +31,8 @@ const CartComponent: React.FC<CartComponentProps> = ({ cart, open, onClose }) =>
                         display: 'flex',
                         flexDirection: 'column',
                         height: `${drawerHeight}px`,
+                        maxHeight: '80vh', // Maximum height of the drawer
+                        overflowY: 'auto', // Enable vertical scroll
                     }
                 }}>
 
@@ -48,17 +50,18 @@ const CartComponent: React.FC<CartComponentProps> = ({ cart, open, onClose }) =>
     }
 
     return <Drawer
-
         open={open}
         onClose={onClose}
         anchor='right'
         PaperProps={{
             sx: {
-                width: 400,
+                width: 420,
                 background: 'white',
                 display: 'flex',
                 flexDirection: 'column',
                 height: `${drawerHeight}px`,
+                maxHeight: '100vh',
+                overflowY: 'auto',
             }
         }}>
 
@@ -93,16 +96,18 @@ const CartComponent: React.FC<CartComponentProps> = ({ cart, open, onClose }) =>
             </Grid>
         </Grid>
 
-
         <Grid container justifyContent="space-between" padding={2}>
             <Grid item>
-                <Button variant="outlined" color="secondary"> Ver cesta </Button>
+                <Button variant="outlined" href="/cartDetailView">
+                    Ver Cesta
+                </Button>
             </Grid>
             <Grid item>
-                <Button variant="contained" color="secondary"> Confirmar compra </Button>
+                <Button variant="contained" href="/confirmPurchaseView">
+                    Confirmar Compra
+                </Button>
             </Grid>
         </Grid>
-
 
     </Drawer >
 };
