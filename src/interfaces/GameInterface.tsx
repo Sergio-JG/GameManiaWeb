@@ -31,4 +31,54 @@ export interface Review {
     comment: string;
 }
 
+export interface User {
+    userId: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    username: string;
+    phone: string;
+    profilePic: string;
+    password: string;
+    socialId: string;
+    social: Social;
+    roleId: string;
+    role: Role;
+    addressId: string;
+    address: Address;
+    creditCard: CreditCard[];
+}
+
+export interface Social {
+    socialId: string;
+    steamUrl: string;
+    twitchUrl: string;
+    youtubeUrl: string;
+    discordTag: string;
+}
+
+export interface Role {
+    roleId: string;
+    name: string;
+}
+
+export interface Address {
+    addressId: string;
+    streetAddress: string;
+    city: string;
+    state?: string;
+    postalCode: string;
+    country: string;
+}
+
+export interface CreditCard {
+    creditCardId: string;
+    userId: string;
+    cardNumber: string;
+    cardHolderName: string;
+    expirationDate: string;
+    cvv: string;
+    billingAddress: string;
+}
+
 export default Game

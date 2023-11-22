@@ -1,19 +1,12 @@
 import { Avatar, Button, Divider, Drawer, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
-import ShirtImage from '../images/default.jpg';
+import defaultPic from '../images/default.jpg';
 
-import GameInterface from '../interfaces/GameInterface';
-interface CartComponentProps {
-    open: boolean;
-    onClose: () => void;
-    cart: GameInterface[];
-}
+import { useContext } from 'react';
+import { CartContext } from '../interfaces/CartContext';
 
-const CartComponent: React.FC<CartComponentProps> = ({ cart, open, onClose }) => {
+const CartComponent = () => {
 
-    const getTotalPrice = () => {
-        return cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
-    };
-
+    const { cart, toggleCart, isCartOpen, getTotalPrice } = useContext(CartContext);
     const drawerHeight = 300 + cart.length * 80;
 
     if (cart.length === 0) {
@@ -21,8 +14,8 @@ const CartComponent: React.FC<CartComponentProps> = ({ cart, open, onClose }) =>
         return (
             <Drawer
 
-                open={open}
-                onClose={onClose}
+                open={isCartOpen}
+                onClose={toggleCart}
                 anchor='right'
                 PaperProps={{
                     sx: {
@@ -50,8 +43,8 @@ const CartComponent: React.FC<CartComponentProps> = ({ cart, open, onClose }) =>
     }
 
     return <Drawer
-        open={open}
-        onClose={onClose}
+        open={isCartOpen}
+        onClose={toggleCart}
         anchor='right'
         PaperProps={{
             sx: {
@@ -76,7 +69,7 @@ const CartComponent: React.FC<CartComponentProps> = ({ cart, open, onClose }) =>
                 <div key={index}>
                     <ListItem>
                         <ListItemAvatar>
-                            <Avatar src={ShirtImage} />
+                            <Avatar src={defaultPic} />
                         </ListItemAvatar>
                         <ListItemText primary={item.title} />
                         <Typography variant="h6">{`$${item.price}`}</Typography>
@@ -93,23 +86,18 @@ const CartComponent: React.FC<CartComponentProps> = ({ cart, open, onClose }) =>
                 <h3>Subtotal:</h3>
             </Grid>
             <Grid item xs={6} sx={{ textAlign: 'right' }}>
-                <h3>${getTotalPrice()}</h3>
+                <h3>${getTotalPrice().toFixed(2)}</h3>
             </Grid>
         </Grid>
 
         <Grid container justifyContent="space-between" padding={2}>
             <Grid item>
-                <Button variant="outlined" href="/cartDetailView">
-                    Ver Cesta
-                </Button>
+                <Button variant="outlined" href="/cartDetailView"> Ver Cesta </Button>
             </Grid>
             <Grid item>
-                <Button variant="contained" href="/buyPlatform">
-                    Confirmar Compra
-                </Button>
+                <Button variant="contained" href="/buyPlatform"> Confirmar Compra </Button>
             </Grid>
         </Grid>
-
     </Drawer >
 };
 

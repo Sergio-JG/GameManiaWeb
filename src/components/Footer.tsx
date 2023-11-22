@@ -1,39 +1,59 @@
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import { IconButton, List, ListItem, Typography } from '@mui/material';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDiscord, faInstagram, faYoutube, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+
 
 const footerStyles = {
   background: 'black',
   color: 'white',
-  padding: '8px',
 };
 
 const Footer = () => {
   return (
     <AppBar position="sticky" style={footerStyles}>
-      <Toolbar>
-        <Grid container justifyContent="center">
-          <ul style={{ listStyle: 'none', display: 'flex' }}>
-            <li>
-              <Button variant="text" style={{ color: 'white', margin: '0 10px' }}>
-                About Us
-              </Button>
-            </li>
-            <li>
-              <Button variant="text" style={{ color: 'white', margin: '0 10px' }}>
-                Contact
-              </Button>
-            </li>
-            <li>
-              <Button variant="text" style={{ color: 'white', margin: '0 10px' }}>
-                Terms of Use
-              </Button>
-            </li>
-          </ul>
+      <Toolbar sx={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+
+        <Grid xs={4} marginInlineStart={10}>
+          <IconButton style={{ color: 'purple' }}>
+            <FontAwesomeIcon icon={faDiscord} style={{ paddingInlineEnd: 15 }} />
+          </IconButton>
+          <IconButton style={{ color: 'orange' }}>
+            <FontAwesomeIcon icon={faInstagram} style={{ paddingInlineEnd: 15 }} />
+          </IconButton>
+          <IconButton style={{ color: 'red' }}>
+            <FontAwesomeIcon icon={faYoutube} style={{ paddingInlineEnd: 15 }} />
+          </IconButton>
+          <IconButton style={{ color: 'white' }}>
+            <FontAwesomeIcon icon={faXTwitter} style={{ paddingInlineEnd: 15 }} />
+          </IconButton>
+        </Grid>
+
+        <Grid xs={4} >
+          <Typography> Copyright © 2023 Game Mania - Todos los derechos reservados </Typography>
+        </Grid>
+
+        <Grid xs={4} marginInlineEnd={10} textAlign={"end"}>
+          <List>
+            <ListItem>
+              <Typography variant="body1"> Terminos y condiciones </Typography>
+            </ListItem >
+            <ListItem>
+              <Typography variant="body1"> Política de privacidad </Typography>
+            </ListItem >
+            <ListItem>
+              <Typography variant="body1"> Contacto </Typography>
+            </ListItem >
+            <ListItem>
+              <Typography variant="body1"> Preguntas frecuentes </Typography>
+            </ListItem >
+          </List>
         </Grid>
       </Toolbar>
-    </AppBar>
+    </AppBar >
   );
 };
 

@@ -8,20 +8,23 @@ import GameDetailView from './routes/GameDetailView';
 import Home from './routes/Home';
 import Login from './routes/LoginView';
 import RegisterView from './routes/RegisterView';
-import BuyPlatform from './routes/buyPlatform';
+import BuyPlatform from './routes/BuyPlatform';
+import { CartProvider } from './interfaces/CartContext';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/game/:id' element={<GameDetailView />} />
-          <Route path='/register' element={<RegisterView />} />
-          <Route path='/buyPlatform' element={<BuyPlatform />} />
-        </Routes>
+        <CartProvider>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/game/:id' element={<GameDetailView />} />
+            <Route path='/register' element={<RegisterView />} />
+            <Route path='/buyPlatform' element={<BuyPlatform />} />
+          </Routes>
+        </CartProvider>
       </div>
     </ThemeProvider>
   );

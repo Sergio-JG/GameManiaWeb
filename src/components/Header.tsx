@@ -3,6 +3,8 @@ import { AppBar, Badge, IconButton, InputBase, Toolbar } from '@mui/material/';
 import Grid from '@mui/material/Grid';
 import { Link } from 'react-router-dom';
 import logo from '../images/logo.png';
+import { CartContext } from '../interfaces/CartContext';
+import { useContext } from 'react';
 
 const headerStyles = {
   background: 'black',
@@ -22,11 +24,9 @@ const iconStyles = {
   color: 'yellow',
 };
 
-interface HeaderComponentProps {
-  handleCartOpen: () => void;
-}
+const HeaderComponent = () => {
 
-const HeaderComponent: React.FC<HeaderComponentProps> = ({ handleCartOpen }) => {
+  const { toggleCart, totalItemsInCart } = useContext(CartContext);
 
   return (
     <AppBar position="sticky" style={headerStyles}>
@@ -56,8 +56,8 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({ handleCartOpen }) => 
           <Grid item xs={4}>
             <ul style={{ listStyle: 'none', display: 'flex', justifyContent: 'right' }}>
               <li>
-                <IconButton style={iconStyles} onClick={handleCartOpen}>
-                  <Badge badgeContent={5} color="primary">
+                <IconButton style={iconStyles} onClick={toggleCart}>
+                  <Badge badgeContent={totalItemsInCart} color="primary">
                     <ShoppingCart />
                   </Badge>
                 </IconButton>

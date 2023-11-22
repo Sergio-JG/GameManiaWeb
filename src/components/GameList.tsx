@@ -1,22 +1,17 @@
-import { useState, useEffect } from 'react';
-import Card from '@mui/material/Card';
+import { useState, useEffect, useContext } from 'react';
 import Button from '@mui/material/Button';
-import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom';
 import GameInterface from '../interfaces/GameInterface';
 import ImagenLogin from '../images/prueba.png';
+import { CartContext } from '../interfaces/CartContext';
 
-interface GameListComponentProps {
-  addToCart: (game: GameInterface) => void;
-}
-
-const GameList: React.FC<GameListComponentProps> = ({ addToCart }) => {
+const GameList = () => {
 
   const [games, setGames] = useState<GameInterface[]>([]);
+  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     fetchData();
@@ -64,10 +59,11 @@ const GameList: React.FC<GameListComponentProps> = ({ addToCart }) => {
                     <Typography variant="h6">{game.title}</Typography>
                   </Grid>
                   <Grid item>
-                    <Typography variant="h5" color="textSecondary">{`$${game.price}`}</Typography>
+                    <Typography variant="h3" color="textSecondary">{`$${game.price}`}</Typography>
                   </Grid>
-                  <Button variant="contained" color="primary" onClick={() => addToCart(game)}>Comprar </Button>
                 </Grid>
+                <Button variant="contained" color="primary" onClick={() => addToCart(game)}>Comprar </Button>
+
               </div>
             </Grid>
           ))}

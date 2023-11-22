@@ -50,7 +50,7 @@ const RegisterComponent: React.FC = () => {
       setErrors((prevErrors) => ({ ...prevErrors, passwordError: '' }));
     }
     try {
-      const response = await fetch(`http://localhost:8080/user?email=${formData.email}`);
+      const response = await fetch(`http://localhost:8080/userByEmail/${formData.email}`);
       if (response.ok) {
         setErrors((prevErrors) => ({ ...prevErrors, emailError: 'Este email ya se encuentra registrado' }));
         isValid = false;
