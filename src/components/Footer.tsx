@@ -6,7 +6,6 @@ import { IconButton, List, ListItem, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDiscord, faInstagram, faYoutube, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 
-
 const footerStyles = {
   background: 'black',
   color: 'white',
@@ -18,13 +17,13 @@ const Footer = () => {
       <Toolbar sx={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
         <Grid xs={4} marginInlineStart={10}>
-          <IconButton style={{ color: 'purple' }}>
+          <IconButton style={{ color: 'white' }}>
             <FontAwesomeIcon icon={faDiscord} style={{ paddingInlineEnd: 15 }} />
           </IconButton>
-          <IconButton style={{ color: 'orange' }}>
+          <IconButton style={{ color: 'white' }}>
             <FontAwesomeIcon icon={faInstagram} style={{ paddingInlineEnd: 15 }} />
           </IconButton>
-          <IconButton style={{ color: 'red' }}>
+          <IconButton style={{ color: 'white' }}>
             <FontAwesomeIcon icon={faYoutube} style={{ paddingInlineEnd: 15 }} />
           </IconButton>
           <IconButton style={{ color: 'white' }}>

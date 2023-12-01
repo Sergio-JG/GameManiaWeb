@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -15,7 +16,8 @@ const RegisterComponent: React.FC = () => {
     email: '',
     password: '',
     firstName: '',
-    lastName: ''
+    lastName: '',
+    role: "User",
   });
 
   const [errors, setErrors] = React.useState({
@@ -49,16 +51,19 @@ const RegisterComponent: React.FC = () => {
     } else {
       setErrors((prevErrors) => ({ ...prevErrors, passwordError: '' }));
     }
+    // ...
+
     try {
-      const response = await fetch(`http://localhost:8080/userByEmail/${formData.email}`);
-      if (response.ok) {
+      const response = await axios.get(`http://localhost:8080/userByEmail/${formData.email}`);
+      if (response.status === 200) {
         setErrors((prevErrors) => ({ ...prevErrors, emailError: 'Este email ya se encuentra registrado' }));
         isValid = false;
       } else {
         setErrors((prevErrors) => ({ ...prevErrors, emailError: '' }));
+        isValid = true;
       }
     } catch (error) {
-      console.error('Error intentando recuperar el email', error);
+
     }
 
     return isValid;
@@ -71,9 +76,10 @@ const RegisterComponent: React.FC = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(formData)
     if (await validate()) {
       try {
-        const response = await fetch('http://localhost:8080/user', {
+        const response = await fetch('http://localhost:8080/user/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

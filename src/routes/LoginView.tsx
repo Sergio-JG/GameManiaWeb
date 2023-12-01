@@ -2,13 +2,14 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
 import logo from '../images/logo.png';
 import ImagenLogin from '../images/loginimage.jpg';
 import { Typography, useTheme } from '@mui/material';
+import { useState } from 'react';
 
 const LoginView: React.FC = () => {
 
@@ -45,6 +46,9 @@ const LoginView: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const navigate = useNavigate();
+  const [rememberMe, setRememberMe] = useState(false);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (await validate()) {
@@ -54,11 +58,29 @@ const LoginView: React.FC = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ formData }),
+          body: JSON.stringify(formData),
         });
 
         if (response.ok) {
-          console.log('User authenticated:');
+
+          const data = await response.json();
+
+          if (rememberMe) {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.userId);
+            localStorage.setItem('role', data.role);
+          } else {
+            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('userId', data.userId);
+            sessionStorage.setItem('role', data.role);
+          }
+
+          if (data.role === 'Admin')
+            navigate("/dashboard");
+          else {
+            navigate("/");
+          }
+
         } else {
           setErrors((prevErrors) => ({ ...prevErrors, generalError: 'Credenciales incorrectas' }));
         }
@@ -108,7 +130,7 @@ const LoginView: React.FC = () => {
           {errors.passwordError && <Typography variant="caption" color="error">{errors.passwordError}</Typography>}
           <Grid container sx={{ justifyContent: 'left' }}>
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" sx={{ color: theme.palette.primary.main }} />}
+              control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} value="remember" color="primary" sx={{ color: theme.palette.primary.main }} />}
               label="Remember me"
               sx={{ color: theme.palette.primary.main }}
             />

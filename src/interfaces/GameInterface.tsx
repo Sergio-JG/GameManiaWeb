@@ -6,6 +6,7 @@ export interface Game {
     description: string;
     releaseDate: string;
     numberOfSales: number;
+    stock: number;
     totalScore: number;
     genres: Genre[];
     platforms: Platform[];
@@ -32,6 +33,21 @@ export interface Review {
 }
 
 export interface User {
+    userId?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    username?: string;
+    phone?: string;
+    profilePic?: string;
+    password?: string;
+    social?: Social;
+    role?: Role;
+    address?: Address;
+    creditCard?: CreditCard[];
+}
+
+export interface UserPut {
     userId: string;
     firstName: string;
     lastName: string;
@@ -40,13 +56,6 @@ export interface User {
     phone: string;
     profilePic: string;
     password: string;
-    socialId: string;
-    social: Social;
-    roleId: string;
-    role: Role;
-    addressId: string;
-    address: Address;
-    creditCard: CreditCard[];
 }
 
 export interface Social {

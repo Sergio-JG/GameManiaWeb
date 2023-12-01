@@ -1,23 +1,17 @@
-import { AccountCircle, Search, ShoppingCart } from '@mui/icons-material/';
-import { AppBar, Badge, IconButton, InputBase, Toolbar } from '@mui/material/';
+import { AccountCircle, Face2, ShoppingCart } from '@mui/icons-material/';
+import { AppBar, Badge, IconButton, Menu, MenuItem, Toolbar } from '@mui/material/';
 import Grid from '@mui/material/Grid';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.png';
-import { CartContext } from '../interfaces/CartContext';
-import { useContext } from 'react';
+import { CartContext } from '../components/CartContext';
+import { useContext, useEffect, useState } from 'react';
+import React from 'react';
+import SearchComponent from './SearchComponent';
 
 const headerStyles = {
   background: 'black',
   color: 'white',
   padding: 10,
-};
-
-const searchStyles = {
-  backgroundColor: 'white',
-  borderRadius: '5px',
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
 };
 
 const iconStyles = {
@@ -27,6 +21,39 @@ const iconStyles = {
 const HeaderComponent = () => {
 
   const { toggleCart, totalItemsInCart } = useContext(CartContext);
+  const [userId, setUserId] = useState<String>();
+
+  useEffect(() => {
+
+    const storedIdLocal = localStorage.getItem('userId');
+    const storedIdSession = sessionStorage.getItem('userId');
+
+    if (storedIdLocal) {
+      setUserId(storedIdLocal);
+    } else if (storedIdSession) {
+      setUserId(storedIdSession);
+    }
+
+  }, []);
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogOf = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    setUserId(undefined);
+    navigate('/');
+  };
 
   return (
     <AppBar position="sticky" style={headerStyles}>
@@ -41,18 +68,7 @@ const HeaderComponent = () => {
               />
             </Link>
           </Grid>
-          <Grid item xs={4}>
-            <div style={searchStyles}>
-              <InputBase
-                placeholder="   Search..."
-                inputProps={{ 'aria-label': 'search' }}
-                style={{ width: '100%' }}
-              />
-              <IconButton aria-label="search">
-                <Search />
-              </IconButton>
-            </div>
-          </Grid>
+          <SearchComponent />
           <Grid item xs={4}>
             <ul style={{ listStyle: 'none', display: 'flex', justifyContent: 'right' }}>
               <li>
@@ -63,11 +79,34 @@ const HeaderComponent = () => {
                 </IconButton>
               </li>
               <li>
-                <Link to={`/login`}>
-                  <IconButton style={iconStyles}>
-                    <AccountCircle />
-                  </IconButton>
-                </Link>
+                {userId ? (
+                  <>
+                    <IconButton style={iconStyles} onClick={handleClick}>
+                      <Face2 />
+                    </IconButton>
+
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                    >
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
+                          Mi perfil
+                        </Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleLogOf}>
+                        Cerrar sesion
+                      </MenuItem>
+                    </Menu>
+                  </>
+                ) : (
+                  <Link to={`/login`}>
+                    <IconButton style={iconStyles}>
+                      <AccountCircle />
+                    </IconButton>
+                  </Link>
+                )}
               </li>
             </ul>
           </Grid>

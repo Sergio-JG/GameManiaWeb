@@ -6,7 +6,8 @@ import Grid from '@mui/material/Grid';
 import { Link } from 'react-router-dom';
 import GameInterface from '../interfaces/GameInterface';
 import ImagenLogin from '../images/prueba.png';
-import { CartContext } from '../interfaces/CartContext';
+import { CartContext } from '../components/CartContext';
+import axios from 'axios';
 
 const GameList = () => {
 
@@ -19,16 +20,18 @@ const GameList = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:8080/game');
-      if (!response.ok) {
+      const response = await axios.get('http://localhost:8080/game');
+      if (response.status === 200) {
+        const result = response.data;
+        setGames(result);
+      } else {
         throw new Error('ERROR');
       }
-      const result = await response.json();
-      setGames(result);
     } catch (error) {
       console.error('ERROR fetching data:', error);
     }
   };
+
   const popularGames = [...games].sort((a, b) => b.numberOfSales - a.numberOfSales);
   const offerGames = games.filter(game => game.price < 20);
 
@@ -36,9 +39,6 @@ const GameList = () => {
     <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={12}>
         <img src={ImagenLogin} alt="Big" style={{ width: '100%', height: 600, objectFit: 'cover' }} />
-        <div style={{ position: 'absolute', top: '25%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center', color: 'white' }}>
-          <Typography variant="h2"> La mejor plataforma de compra de juegos online </Typography>
-        </div>
       </Grid>
       <Grid item xs={12} style={{ padding: '20px 30px' }}>
         <Typography variant="h4" style={{ padding: '20px' }}> All Games </Typography>
@@ -56,7 +56,7 @@ const GameList = () => {
                 </Link>
                 <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
                   <Grid item>
-                    <Typography variant="h6">{game.title}</Typography>
+                    <Typography variant="h6"> {game.title} {game.stock} </Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="h3" color="textSecondary">{`$${game.price}`}</Typography>
@@ -85,7 +85,7 @@ const GameList = () => {
                 </Link>
                 <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
                   <Grid item>
-                    <Typography variant="h6">{game.title}</Typography>
+                    <Typography variant="h6"> {game.title} {game.stock} </Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="h5" color="textSecondary">{`$${game.price}`}</Typography>
@@ -113,7 +113,7 @@ const GameList = () => {
                 </Link>
                 <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
                   <Grid item>
-                    <Typography variant="h6">{game.title}</Typography>
+                    <Typography variant="h6"> {game.title} {game.stock} </Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="h5" color="textSecondary">{`$${game.price}`}</Typography>

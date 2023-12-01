@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Avatar, Box, Button, Divider, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { CartContext } from '../interfaces/CartContext';
+import { CartContext } from '../components/CartContext';
 import GameInterface, { User, Address, CreditCard } from '../interfaces/GameInterface';
 import { ArrowRight } from '@mui/icons-material';
 import defaultPic from '../images/default.jpg';
