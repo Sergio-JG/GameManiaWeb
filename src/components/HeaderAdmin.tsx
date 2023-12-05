@@ -1,6 +1,5 @@
 import { AppBar, Toolbar, Grid, Typography } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 
 const headerStyles = {
   background: 'black',
@@ -14,32 +13,20 @@ const HeaderAdmin = () => {
     <AppBar position="sticky" style={headerStyles}>
       <Toolbar>
         <Grid container justifyContent="space-evenly">
-          <Link to="/entity/account" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">Account</Typography>
+          <Link to="/dashboard/game" style={{ textDecoration: 'none', color: "white" }}>
+            <Typography color="inherit">Game</Typography>
           </Link>
-          <Link to="/entity/address" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">Address</Typography>
+          <Link to="/dashboard/provider" style={{ textDecoration: 'none', color: "white" }}>
+            <Typography color="inherit">Provider</Typography>
           </Link>
-          <Link to="/entity/credit-card" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">Credit Card</Typography>
+          <Link to="/dashboard/user" style={{ textDecoration: 'none', color: "white" }}>
+            <Typography color="inherit">User</Typography>
           </Link>
-          <Link to="/entity/account" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">Account</Typography>
+          <Link to="/dashboard/purchase" style={{ textDecoration: 'none', color: "white" }}>
+            <Typography color="inherit">Purchase</Typography>
           </Link>
-          <Link to="/entity/address" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">Address</Typography>
-          </Link>
-          <Link to="/entity/credit-card" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">Credit Card</Typography>
-          </Link>
-          <Link to="/entity/account" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">Account</Typography>
-          </Link>
-          <Link to="/entity/address" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">Address</Typography>
-          </Link>
-          <Link to="/entity/credit-card" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">Credit Card</Typography>
+          <Link to="/dashboard/sale" style={{ textDecoration: 'none', color: "white" }}>
+            <Typography color="inherit">Sale</Typography>
           </Link>
         </Grid>
       </Toolbar>

@@ -1,17 +1,45 @@
 export interface Game {
-    gameId: string;
+    saleId: Key | null | undefined;
+    saleDate: ReactNode;
+    totalAmount: ReactNode;
+    social: any;
+    role: any;
+    address: any;
+    gameId?: string;
     title: string;
     price: number;
-    image: string;
+    image?: string;
     description: string;
     releaseDate: string;
-    numberOfSales: number;
+    numberOfSales?: number;
+    totalScore?: number;
     stock: number;
-    totalScore: number;
     genres: Genre[];
     platforms: Platform[];
-    reviews: Review[];
-    quantity: number;
+    reviews?: Review[];
+}
+
+export interface Account {
+
+    accountId: string;
+    providerId: string;
+    provider: Provider;
+    accountHolderName: string;
+    accoutnName: string;
+    bankName: string;
+    bankAddress: string;
+    bankRoutingNumber: string;
+    accountBalance: string;
+}
+
+export interface Provider {
+
+    providerId: string;
+    name: string;
+    address: string;
+    phone: string;
+    email: string;
+    account: Account[];
 }
 
 export interface Genre {
@@ -47,17 +75,6 @@ export interface User {
     creditCard?: CreditCard[];
 }
 
-export interface UserPut {
-    userId: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    username: string;
-    phone: string;
-    profilePic: string;
-    password: string;
-}
-
 export interface Social {
     socialId: string;
     steamUrl: string;
@@ -89,5 +106,39 @@ export interface CreditCard {
     cvv: string;
     billingAddress: string;
 }
+
+export interface SaleDetail {
+    sale_detail_id: string;
+    sale_id: string;
+    game: Game;
+    quantity: number | null;
+    subtotal: number | null;
+}
+
+export interface Sale {
+    saleId: string;
+    userId: string | null;
+    saleDate: string | null;
+    totalAmount: number | null;
+    saleDetails: SaleDetail[];
+}
+
+export interface PurchaseDetail {
+    purchaseDetailId: string;
+    purchaseId: string;
+    game: Game;
+    quantity: number | null;
+    unitPrice: number | null;
+    subtotal: number | null;
+}
+
+export interface Purchase {
+    purchaseId: string;
+    providerId: string;
+    purchaseDate: string | null;
+    totalAmount: number | null;
+    purchaseDetails: PurchaseDetail[];
+}
+
 
 export default Game

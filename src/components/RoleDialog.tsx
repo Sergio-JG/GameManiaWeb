@@ -15,8 +15,8 @@ const RoleDialog = ({ open, onClose, selectedUser }: RoleDialogProps) => {
             <DialogContent>
                 {selectedUser && (
                     <div>
-                        <Typography variant="subtitle1"> ID: {selectedUser.role.roleId}</Typography>
-                        <Typography variant="subtitle1"> Nombre: {selectedUser.role.name}</Typography>
+                        <Typography variant="subtitle1"> ID: {selectedUser.role?.roleId}</Typography>
+                        <Typography variant="subtitle1"> Nombre: {selectedUser.role?.name}</Typography>
                     </div>
                 )}
             </DialogContent>

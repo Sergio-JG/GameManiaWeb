@@ -76,7 +76,7 @@ const LoginView: React.FC = () => {
           }
 
           if (data.role === 'Admin')
-            navigate("/dashboard");
+            navigate("/dashboard/user");
           else {
             navigate("/");
           }
