@@ -1,18 +1,21 @@
-import AddressDialog from '../../components/AddressDialog';
+
 import RoleDialog from '../../components/RoleDialog';
-import SocialDialog from '../../components/SocialDialog';
+import SocialDialog from '../../components/dialog/SocialDialog';
 import axios from 'axios';
-import User from '../../interfaces/GameInterface'
+import { User } from '../../interfaces/GameInterface'
 import HeaderAdmin from '../../components/HeaderAdmin';
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Grid, Pagination } from '@mui/material';
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Grid, Pagination, Typography } from '@mui/material';
 import { useState, useReducer, useEffect } from 'react';
 import FooterAdmin from '../../components/FooterAdmin';
+import AddressDialog from '../../components/dialog/AddressDialog';
+import CreditCardDialog from '../../components/dialog/CreditCardDialog';
 
 const UserManage: React.FC = () => {
 
     const API_URL = 'http://localhost:8080/user';
 
     type StateType = {
+        openCreditCardPopup: any;
         openAddressPopup: boolean;
         openRolePopup: boolean;
         openSocialPopup: boolean;
@@ -22,15 +25,18 @@ const UserManage: React.FC = () => {
     type ActionType =
         | { type: 'OPEN_ADDRESS_POPUP'; payload: User }
         | { type: 'CLOSE_ADDRESS_POPUP' }
+        | { type: 'OPEN_CREDITCARD_POPUP'; payload: User }
+        | { type: 'CLOSE_CREDITCARD_POPUP' }
         | { type: 'OPEN_ROLE_POPUP'; payload: User }
         | { type: 'CLOSE_ROLE_POPUP' }
         | { type: 'OPEN_SOCIAL_POPUP'; payload: User }
         | { type: 'CLOSE_SOCIAL_POPUP' };
 
 
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<User[]>([]);
     const [page, setPage] = useState(1);
     const [editMode, setEditMode] = useState(false);
+    const [editedUser, setEditedUser] = useState<User | undefined>();
 
     const handleEdit = (user: User) => {
         setEditedUser(user);
@@ -41,9 +47,9 @@ const UserManage: React.FC = () => {
         openAddressPopup: false,
         openRolePopup: false,
         openSocialPopup: false,
+        openCreditCardPopup: false,
         selectedUser: null
     };
-
 
     const reducer = (state: StateType, action: ActionType) => {
         switch (action.type) {
@@ -59,6 +65,10 @@ const UserManage: React.FC = () => {
                 return { ...state, openSocialPopup: true, selectedUser: action.payload };
             case 'CLOSE_SOCIAL_POPUP':
                 return { ...state, openSocialPopup: false, selectedUser: null };
+            case 'OPEN_CREDITCARD_POPUP':
+                return { ...state, openCreditCardPopup: true, selectedUser: action.payload };
+            case 'CLOSE_CREDITCARD_POPUP':
+                return { ...state, openCreditCardPopup: false, selectedUser: null };
             default:
                 return state;
         }
@@ -91,8 +101,16 @@ const UserManage: React.FC = () => {
         dispatch({ type: 'OPEN_ADDRESS_POPUP', payload: user });
     };
 
+    const handleCreditCardPopUp = (user: User) => {
+        dispatch({ type: 'OPEN_CREDITCARD_POPUP', payload: user });
+    };
+
     const handleAddressPopUpClose = () => {
         dispatch({ type: 'CLOSE_ADDRESS_POPUP' });
+    };
+
+    const handleCreditCardPopUpClose = () => {
+        dispatch({ type: 'CLOSE_CREDITCARD_POPUP' });
     };
 
     const handleRolePopUpClose = () => {
@@ -116,28 +134,33 @@ const UserManage: React.FC = () => {
         }
     };
 
-    const handleCancel = () => {
-        setEditedUser(null);
-        setEditMode(false);
-    };
-
     function handleFirstNameChange(value: string): void {
+        setEditedUser((prevUser) => prevUser ? { ...prevUser, firstName: value } : undefined);
     }
 
     function handleLastNameChange(value: string): void {
+        setEditedUser((prevUser) => prevUser ? { ...prevUser, lastName: value } : undefined);
     }
 
     function handlePhoneChange(value: string): void {
+        setEditedUser((prevUser) => prevUser ? { ...prevUser, phone: value } : undefined);
     }
 
     function handleFormOpen(event: any): void {
     }
 
+    function handleCancel(event: any): void {
+        throw new Error('Function not implemented.');
+    }
+
     return (
         <div>
             <HeaderAdmin />
+            <Grid container justifyContent={'center'} paddingY={4}>
+                <Typography variant='h3'> Gestión de usuarios </Typography>
+            </Grid>
             <Grid padding={5}>
-                <TableContainer component={Paper} sx={{ minHeight: '69vh' }}>
+                <TableContainer component={Paper} sx={{ minHeight: '54vh' }}>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -150,7 +173,8 @@ const UserManage: React.FC = () => {
                                 <TableCell>Foto de perfil</TableCell>
                                 <TableCell>Social</TableCell>
                                 <TableCell>Rol</TableCell>
-                                <TableCell>Cuenta</TableCell>
+                                <TableCell>Direccion</TableCell>
+                                <TableCell>Tarjeta de credito</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell></TableCell>
                             </TableRow>
@@ -204,6 +228,9 @@ const UserManage: React.FC = () => {
                                     <TableCell onClick={user.address ? () => handleAddressPopUp(user) : undefined}>
                                         {user.address ? 'ver cuenta...' : 'No hay datos'}
                                     </TableCell>
+                                    <TableCell onClick={user.creditCard ? () => handleCreditCardPopUp(user) : undefined}>
+                                        {user.creditCard ? 'ver creditCard...' : 'No hay datos'}
+                                    </TableCell>
                                     {editMode && user.userId == editedUser?.userId ? (
                                         <>
                                             <TableCell>
@@ -236,11 +263,10 @@ const UserManage: React.FC = () => {
                 </Grid>
             </Grid>
             <FooterAdmin />
+            <CreditCardDialog open={state.openCreditCardPopup} onClose={handleCreditCardPopUpClose} selectedUser={state.selectedUser} />
             <AddressDialog open={state.openAddressPopup} onClose={handleAddressPopUpClose} selectedUser={state.selectedUser} />
             <RoleDialog open={state.openRolePopup} onClose={handleRolePopUpClose} selectedUser={state.selectedUser} />
             <SocialDialog open={state.openSocialPopup} onClose={handleSocialPopUpClose} selectedUser={state.selectedUser} />
-            <RoleDialog open={state.openRolePopup} onClose={handleRolePopUpClose} selectedUser={state.selectedUser} />
-            <AddressDialog open={state.openAddressPopup} onClose={handleAddressPopUpClose} selectedUser={state.selectedUser} />
         </div>
     );
 };

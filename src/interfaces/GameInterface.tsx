@@ -1,18 +1,12 @@
 export interface Game {
-    saleId: Key | null | undefined;
-    saleDate: ReactNode;
-    totalAmount: ReactNode;
-    social: any;
-    role: any;
-    address: any;
     gameId?: string;
     title: string;
     price: number;
-    image?: string;
     description: string;
     releaseDate: string;
-    numberOfSales?: number;
+    numberOfSales: number;
     totalScore?: number;
+    image?: string;
     stock: number;
     genres: Genre[];
     platforms: Platform[];
@@ -34,12 +28,12 @@ export interface Account {
 
 export interface Provider {
 
-    providerId: string;
+    providerId?: string;
     name: string;
     address: string;
     phone: string;
     email: string;
-    account: Account[];
+    account?: Account | null;
 }
 
 export interface Genre {
@@ -117,7 +111,8 @@ export interface SaleDetail {
 
 export interface Sale {
     saleId: string;
-    userId: string | null;
+    firstName: string;
+    secondName: string;
     saleDate: string | null;
     totalAmount: number | null;
     saleDetails: SaleDetail[];
@@ -134,11 +129,9 @@ export interface PurchaseDetail {
 
 export interface Purchase {
     purchaseId: string;
-    providerId: string;
+    firstName: string;
+    secondName: string;
     purchaseDate: string | null;
     totalAmount: number | null;
     purchaseDetails: PurchaseDetail[];
 }
-
-
-export default Game

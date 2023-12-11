@@ -1,14 +1,14 @@
 import { Provider } from '../../interfaces/GameInterface'
 import HeaderAdmin from '../../components/HeaderAdmin';
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Pagination, Grid } from '@mui/material';
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Pagination, Grid, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
-import CreateGameForm from '../../components/CreateGameForm';
-import DescriptionDialog from '../../components/DescriptionDialog';
+import CreateProviderForm from '../../components/CreateProviderForm';
 import FooterAdmin from '../../components/FooterAdmin';
 
 const ProviderManage: React.FC = () => {
 
     const API_URL = 'http://localhost:8080/provider';
+
     const [providers, setProviders] = useState<[]>([]);
     const [page, setPage] = useState(1);
     const [open, setOpen] = useState(false);
@@ -46,15 +46,18 @@ const ProviderManage: React.FC = () => {
         throw new Error('Function not implemented.');
     }
 
-    function handleCreateButtonClick(event: any): void {
-        throw new Error('Function not implemented.');
-    }
+    const handleFormOpen = () => {
+        setOpen(true);
+    };
 
     return (
         <div>
             <HeaderAdmin />
+            <Grid container justifyContent={'center'} paddingY={4}>
+                <Typography variant='h3'> Gestión de proveedores </Typography>
+            </Grid>
             <Grid padding={5}>
-                <TableContainer component={Paper} sx={{ minHeight: '69vh' }}>
+                <TableContainer component={Paper} sx={{ minHeight: '58vh' }}>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -90,13 +93,13 @@ const ProviderManage: React.FC = () => {
                     </Table>
                 </TableContainer>
                 <Grid container justifyContent="flex-end" paddingY={2} height={40}>
-                    <Button onClick={handleCreateButtonClick} variant="contained" color="success">Crear</Button>
+                    <Button onClick={handleFormOpen} variant="contained" color="success">Crear</Button>
                 </Grid>
             </Grid>
             <FooterAdmin />
+            <CreateProviderForm open={open} onClose={handleFormClose} />
         </div >
     );
 };
-
 
 export default ProviderManage;

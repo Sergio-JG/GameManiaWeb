@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, DialogTitle, DialogContent, Typography } from "@mui/material"
-import { Provider } from "../interfaces/GameInterface"
+import { Provider } from "../../interfaces/GameInterface"
 
 interface AccountDialogProps {
     open: boolean;

@@ -9,13 +9,13 @@ import { faDiscord, faInstagram, faYoutube, faXTwitter } from '@fortawesome/free
 const footerStyles = {
   background: 'black',
   color: 'white',
+  padding: 10,
 };
 
 const Footer = () => {
   return (
-    <AppBar position="sticky" style={footerStyles}>
+    <AppBar position="sticky" style={footerStyles} sx={{ marginTop: 10 }}>
       <Toolbar sx={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-
         <Grid xs={4} marginInlineStart={10}>
           <IconButton style={{ color: 'white' }}>
             <FontAwesomeIcon icon={faDiscord} style={{ paddingInlineEnd: 15 }} />
