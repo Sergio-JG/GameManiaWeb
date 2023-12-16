@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { Link } from 'react-router-dom';
 import GameInterface from '../interfaces/GameInterface';
-import ImagenLogin from '../../public/images/games/Cyberpunk.jpg';
+import ImagenLogin from '../../public/images/games/Cyberpunk2077.jpg';
 import { CartContext } from '../components/CartContext';
 import axios from 'axios';
 
