@@ -42,7 +42,7 @@ const ProviderManage: React.FC = () => {
 
     useEffect(() => { fetchProviders(); }, []);
 
-    function handleAccountPopUp(provider: Provider): void {
+    function handleAccountPopUp(_provider: Provider): void {
         throw new Error('Function not implemented.');
     }
 
@@ -88,7 +88,7 @@ const ProviderManage: React.FC = () => {
                         <Pagination
                             count={Math.ceil(providers.length / 9)}
                             page={page}
-                            onChange={(event, value) => setPage(value)}
+                            onChange={(_event, value) => setPage(value)}
                         />
                     </Table>
                 </TableContainer>
