@@ -55,18 +55,18 @@ export interface Review {
 }
 
 export interface User {
-    userId?: string;
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    username?: string;
-    phone?: string;
-    profilePic?: string;
-    password?: string;
-    social?: Social;
-    role?: Role;
-    address?: Address;
-    creditCard?: CreditCard[];
+    userId: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    username: string;
+    phone: string;
+    profilePic: string;
+    password: string;
+    social: Social;
+    role: Role;
+    address: Address;
+    creditCard: CreditCard[];
 }
 
 export interface Social {
@@ -102,8 +102,10 @@ export interface CreditCard {
 }
 
 export interface SaleDetail {
-    sale_detail_id: string;
-    sale_id: string;
+    unitPrice: string;
+    gameName: string;
+    sale_detail_id?: string;
+    sale_id?: string;
     game: Game;
     quantity: number | null;
     subtotal: number | null;
@@ -113,9 +115,9 @@ export interface Sale {
     saleId: string;
     firstName: string;
     secondName: string;
-    saleDate: string | null;
-    totalAmount: number | null;
-    saleDetails: SaleDetail[];
+    saleDate: string;
+    totalAmount: number;
+    saleDetail: SaleDetail[];
 }
 
 export interface PurchaseDetail {
@@ -135,3 +137,21 @@ export interface Purchase {
     totalAmount: number | null;
     purchaseDetails: PurchaseDetail[];
 }
+
+export interface CartItem {
+    quantity: number;
+    gameId: string;
+    title: string;
+    price: number;
+    description: string;
+    releaseDate: string;
+    numberOfSales: number;
+    totalScore?: number;
+    image?: string;
+    stock: number;
+    genres: Genre[];
+    platforms: Platform[];
+    reviews?: Review[];
+}
+
+export default CartItem

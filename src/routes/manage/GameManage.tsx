@@ -25,6 +25,7 @@ const GameManage: React.FC = () => {
 
     const [openDialog, setOpenDialog] = useState(false);
     const [quantity, setQuantity] = useState(1);
+    const [stock, setStock] = useState(0);
 
 
     const fetchGames = async () => {
@@ -80,7 +81,7 @@ const GameManage: React.FC = () => {
             ],
         };
 
-        const newStock = selectedGame?.stock ? selectedGame.stock + quantity : undefined;
+        const newStock = selectedGame?.stock ? selectedGame.stock + stock : stock;
         if (selectedGame) {
             selectedGame.stock = newStock as number;
         }
@@ -217,8 +218,8 @@ const GameManage: React.FC = () => {
                                 variant='filled'
                                 label="Cantidad"
                                 type="number"
-                                value={quantity}
-                                onChange={(e) => setQuantity(Number(e.target.value))}
+                                value={stock}
+                                onChange={(e) => setStock(Number(e.target.value))}
                                 fullWidth
                             />
                         </Grid>

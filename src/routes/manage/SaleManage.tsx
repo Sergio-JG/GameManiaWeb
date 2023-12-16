@@ -44,7 +44,7 @@ const SaleManage: React.FC = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {sales.map((sale: Sale) => (
+                            {sales.slice((page - 1) * 9, page * 9).map((sale: Sale) => (
                                 <TableRow key={sale.saleId}>
                                     <TableCell> {sale.firstName} {sale.secondName} </TableCell>
                                     <TableCell> {sale.saleDate} </TableCell>

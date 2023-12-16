@@ -35,6 +35,7 @@ const CreateGameForm = ({ open, onClose }: OpenGameFormProps) => {
         releaseDate: '',
         stock: 0,
         genres: [],
+        numberOfSales: 0,
         platforms: [],
     });
 
@@ -60,7 +61,7 @@ const CreateGameForm = ({ open, onClose }: OpenGameFormProps) => {
 
         fetchGenres();
         fetchPlatforms();
-        setFormData({ title: '', price: 0, description: '', releaseDate: '', stock: 0, genres: [], platforms: [], });
+        setFormData({ title: '', price: 0, description: '', releaseDate: '', stock: 0, numberOfSales: 0, genres: [], platforms: [], });
 
     }, []);
 
@@ -78,12 +79,14 @@ const CreateGameForm = ({ open, onClose }: OpenGameFormProps) => {
 
     const formatedFormData = (formData: any) => {
         const formDataCopy = { ...formData };
+
         formDataCopy.genres = formData.genres.map((genreId: string) => {
             return genres.find((genre) => genre.genreId === genreId);
         });
         formDataCopy.platforms = formData.platforms.map((platformId: string) => {
             return platforms.find((platform) => platform.platformId === platformId);
         });
+
         return formDataCopy;
     };
 
@@ -119,6 +122,7 @@ const CreateGameForm = ({ open, onClose }: OpenGameFormProps) => {
                     />
                     <Typography> Precio </Typography>
                     <TextField
+                        type='number'
                         margin="normal"
                         required
                         id="price"

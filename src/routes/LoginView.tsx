@@ -47,6 +47,7 @@ const LoginView: React.FC = () => {
   };
 
   const navigate = useNavigate();
+
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -141,12 +142,12 @@ const LoginView: React.FC = () => {
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}> Iniciar sesión </Button>
           <Grid container sx={{ paddingTop: 2 }}>
             <Grid item xs>
-              <Link to='/register'>
+              <Link to='/register' style={{ color: 'white' }}>
                 {"¿No tienes una cuenta?"}
               </Link>
             </Grid>
             <Grid item >
-              <Link to='/register'>
+              <Link to='/register' style={{ color: 'white' }}>
                 {"¿Has olvidado la contraseña?"}
               </Link>
             </Grid>

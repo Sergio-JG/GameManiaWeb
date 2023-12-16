@@ -1,12 +1,15 @@
 import { Avatar, Button, Divider, Drawer, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import GameInterface from '../interfaces/GameInterface';
+import { Remove } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 export const CartContext = createContext<{
     cart: GameInterface[];
     setCart: React.Dispatch<React.SetStateAction<GameInterface[]>>;
     isCartOpen: boolean;
     addToCart: (game: GameInterface) => void;
+    removeFromCart: (gameId: string) => void;
     toggleCart: () => void;
     getTotalPrice: () => number;
     totalItemsInCart: number;
@@ -15,6 +18,7 @@ export const CartContext = createContext<{
     setCart: () => { },
     isCartOpen: false,
     addToCart: () => { },
+    removeFromCart: () => { },
     toggleCart: () => { },
     getTotalPrice: () => 0,
     totalItemsInCart: 0,
@@ -26,9 +30,16 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [cart, setCart] = useState<GameInterface[]>(cartFromLocalStorage);
     const drawerHeight = 300 + cart.length * 80;
     const [isCartOpen, setCartOpen] = useState(false);
+    const navigate = useNavigate();
 
     const saveCartToLocalStorage = (cartData: GameInterface[]) => {
         localStorage.setItem('cart', JSON.stringify(cartData));
+    };
+
+    const removeFromCart = (gameId: string) => {
+        const updatedCart = cart.filter((item) => item.gameId !== gameId);
+        setCart(updatedCart);
+        saveCartToLocalStorage(updatedCart);
     };
 
     const addToCart = (game: GameInterface) => {
@@ -66,6 +77,17 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setCartOpen((prevIsCartOpen) => !prevIsCartOpen);
     };
 
+    const handleNavigation = () => {
+        toggleCart()
+        const userId = localStorage.getItem('userId') || sessionStorage.getItem('userId') || '';
+        if (userId) {
+            navigate('/buyPlatform');
+        } else {
+            navigate('/login');
+        }
+
+    };
+
     const totalItemsInCart = cart.reduce((total, item) => total + item.quantity, 0);
 
     return (
@@ -75,6 +97,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 setCart,
                 isCartOpen,
                 addToCart,
+                removeFromCart,
                 toggleCart,
                 getTotalPrice,
                 totalItemsInCart,
@@ -113,8 +136,23 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                                     <Avatar src={item.image} />
                                 </ListItemAvatar>
                                 <ListItemText primary={item.title} />
-                                <Typography variant="h6">{`$${item.price}`}</Typography>
-                                <Typography variant="body1">{`(${item.quantity})`}</Typography>
+                                <Typography variant="h6">{`${item.price}€`}</Typography>
+                                <Typography paddingInlineEnd={2} variant="body1">{`(${item.quantity})`}</Typography>
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    style={{
+                                        borderRadius: '50%',
+                                        width: '40px',
+                                        height: '40px',
+                                        minWidth: 'unset',
+                                        minHeight: 'unset',
+                                        padding: '0',
+                                    }}
+                                    onClick={() => removeFromCart(item.gameId)}
+                                >
+                                    <Remove />
+                                </Button>
                             </ListItem>
                         </div>
                     ))}
@@ -127,20 +165,13 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                         <h3>Subtotal:</h3>
                     </Grid>
                     <Grid item xs={6} sx={{ textAlign: 'right' }}>
-                        <h3>${getTotalPrice().toFixed(2)}</h3>
+                        <h3>{getTotalPrice().toFixed(2)}€</h3>
                     </Grid>
                 </Grid>
 
-                <Grid container justifyContent="space-between" padding={2}>
+                <Grid container justifyContent="center" padding={2}>
                     <Grid item>
-                        <Button variant="outlined" href="/cartDetailView">
-                            Ver Cesta
-                        </Button>
-                    </Grid>
-                    <Grid item>
-                        <Button variant="contained" href="/buyPlatform">
-                            Confirmar Compra
-                        </Button>
+                        <Button variant="contained" onClick={handleNavigation}> Confirmar Compra </Button>
                     </Grid>
                 </Grid>
             </Drawer>

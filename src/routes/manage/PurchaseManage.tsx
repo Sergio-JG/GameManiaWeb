@@ -5,11 +5,11 @@ import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody
 import { useState, useEffect } from 'react';
 import FooterAdmin from '../../components/FooterAdmin';
 
-const SaleManage: React.FC = () => {
+const PurchaseManage: React.FC = () => {
 
     const API_URL = 'http://localhost:8080/purchase';
 
-    const [sales, setSales] = useState<Purchase[]>([]);
+    const [purchase, setPurchases] = useState<Purchase[]>([]);
     const [page, setPage] = useState(1);
 
     useEffect(() => {
@@ -17,7 +17,7 @@ const SaleManage: React.FC = () => {
             try {
                 const response = await axios.get(API_URL);
                 console.log(response.data)
-                setSales(response.data);
+                setPurchases(response.data);
             } catch (error) {
                 console.error('Error fetching sales:', error);
             }
@@ -44,7 +44,7 @@ const SaleManage: React.FC = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {sales.map((purchase: Purchase) => (
+                            {purchase.slice((page - 1) * 9, page * 9).map((purchase: Purchase) => (
                                 <TableRow key={purchase.purchaseId}>
                                     <TableCell> {purchase.firstName} {purchase.secondName} </TableCell>
                                     <TableCell> {purchase.purchaseDate} </TableCell>
@@ -54,7 +54,7 @@ const SaleManage: React.FC = () => {
                             ))}
                         </TableBody>
                         <Pagination
-                            count={Math.ceil(sales.length / 9)}
+                            count={Math.ceil(purchase.length / 9)}
                             page={page}
                             onChange={(event, value) => setPage(value)}
                         />
@@ -66,4 +66,4 @@ const SaleManage: React.FC = () => {
     );
 };
 
-export default SaleManage;
+export default PurchaseManage;

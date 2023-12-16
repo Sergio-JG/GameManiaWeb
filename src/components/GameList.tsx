@@ -4,14 +4,14 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { Link } from 'react-router-dom';
-import { Game } from '../interfaces/GameInterface';
-import ImagenLogin from '../../public/images/games/RedDeadRedemption2.jpg';
+import GameInterface from '../interfaces/GameInterface';
+import ImagenLogin from '../../public/images/games/Cyberpunk.jpg';
 import { CartContext } from '../components/CartContext';
 import axios from 'axios';
 
 const GameList = () => {
 
-  const [games, setGames] = useState<Game[]>([]);
+  const [games, setGames] = useState<GameInterface[]>([]);
   const { addToCart } = useContext(CartContext);
 
   const IMAGEN_URL = '/images/games/';
@@ -54,54 +54,28 @@ const GameList = () => {
                   <CardMedia
                     component="img"
                     alt={game.title}
-                    height="140"
+                    height="200"
                     image={IMAGEN_URL + game.image}
                   />
                 </Link>
                 <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
                   <Grid item>
-                    <Typography variant="h6"> {game.title} {game.stock === 0 ? 'Sold Out' : game.stock} </Typography>
+                    <Typography variant="h6"> {game.title} </Typography>
                   </Grid>
                   <Grid item>
-                    <Typography variant="h3" color="textSecondary">{`$${game.price}`}</Typography>
+                    <Typography variant="h3" color="black">{`${game.price}€`}</Typography>
                   </Grid>
                 </Grid>
                 {game.stock === 0 ? (
-                  <Typography variant="body1">Sold Out</Typography>
-                ) : (
-                  <Button variant="contained" color="primary" onClick={() => addToCart(game)}>Comprar</Button>
-                )}
-              </div>
-            </Grid>
-          ))}
-        </Grid>
-      </Grid>
-      <Grid item xs={12} style={{ padding: '20px 30px' }}>
-        <Typography variant="h4" style={{ padding: '20px' }}> Más vendidos </Typography>
-        <Grid container spacing={6}>
-          {offerGames.map((game, index) => (
-            <Grid key={index} item xs={12} sm={6} md={4}>
-              <div style={{ border: '1px solid #ccc', padding: '10px', height: '100%' }}>
-                <Link to={`/game/${game.gameId}`}>
-                  <CardMedia
-                    component="img"
-                    alt={game.title}
-                    height="140"
-                    image={IMAGEN_URL + game.image}
-                  />
-                </Link>
-                <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
-                  <Grid item>
-                    <Typography variant="h6"> {game.title} {game.stock === 0 ? 'Sold Out' : game.stock} </Typography>
+                  <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
+                    <Typography variant="body1" color="primary" > </Typography>
+                    <Typography variant="body1" color="error" > No Disponible </Typography>
                   </Grid>
-                  <Grid item>
-                    <Typography variant="h3" color="textSecondary">{`$${game.price}`}</Typography>
-                  </Grid>
-                </Grid>
-                {game.stock === 0 ? (
-                  <Typography variant="body1">Sold Out</Typography>
                 ) : (
-                  <Button variant="contained" color="primary" onClick={() => addToCart(game)}>Comprar</Button>
+                  <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
+                    <Button variant="contained" color="primary" onClick={() => addToCart(game)}>Comprar</Button>
+                    <Typography variant="body1" color="primary" > Disponible </Typography>
+                  </Grid>
                 )}
               </div>
             </Grid>
@@ -111,6 +85,47 @@ const GameList = () => {
       <Grid item xs={12} style={{ padding: '20px 30px' }}>
         <Typography variant="h4" style={{ padding: '20px' }}> Ofertas </Typography>
         <Grid container spacing={6}>
+          {offerGames.map((game, index) => (
+            <Grid key={index} item xs={12} sm={6} md={4}>
+              <div style={{ border: '1px solid #ccc', padding: '10px', height: '100%' }}>
+                <Link to={`/game/${game.gameId}`}>
+                  <CardMedia
+                    component="img"
+                    alt={game.title}
+                    height="200"
+                    image={IMAGEN_URL + game.image}
+                  />
+                </Link>
+                <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
+                  <Grid item>
+                    <Typography variant="h6"> {game.title} </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="h4" color="red" style={{ textDecoration: 'line-through' }}>{`${game.price}€`}</Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="h4" color="black">{`${(game.price - (game.price * (20 / 100))).toFixed(2)}€`}</Typography>
+                  </Grid>
+                </Grid>
+                {game.stock === 0 ? (
+                  <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
+                    <Typography variant="body1" color="primary" > </Typography>
+                    <Typography variant="body1" color="error" > No Disponible </Typography>
+                  </Grid>
+                ) : (
+                  <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
+                    <Button variant="contained" color="primary" onClick={() => addToCart(game)}>Comprar</Button>
+                    <Typography variant="body1" color="primary" > Disponible </Typography>
+                  </Grid>
+                )}
+              </div>
+            </Grid>
+          ))}
+        </Grid>
+      </Grid>
+      <Grid item xs={12} style={{ padding: '20px 30px' }}>
+        <Typography variant="h4" style={{ padding: '20px' }}> Más vendidos </Typography>
+        <Grid container spacing={6}>
           {popularGames.map((game, index) => (
             <Grid key={index} item xs={12} sm={6} md={4}>
               <div style={{ border: '1px solid #ccc', padding: '10px', height: '100%' }}>
@@ -118,22 +133,28 @@ const GameList = () => {
                   <CardMedia
                     component="img"
                     alt={game.title}
-                    height="140"
+                    height="200"
                     image={IMAGEN_URL + game.image}
                   />
                 </Link>
                 <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
                   <Grid item>
-                    <Typography variant="h6"> {game.title} {game.stock === 0 ? 'Sold Out' : game.stock} </Typography>
+                    <Typography variant="h6"> {game.title} </Typography>
                   </Grid>
                   <Grid item>
-                    <Typography variant="h3" color="textSecondary">{`$${game.price}`}</Typography>
+                    <Typography variant="h3" color="black">{`${game.price}€`}</Typography>
                   </Grid>
                 </Grid>
                 {game.stock === 0 ? (
-                  <Typography variant="body1">Sold Out</Typography>
+                  <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
+                    <Typography variant="body1" color="primary" > </Typography>
+                    <Typography variant="body1" color="error" > No Disponible </Typography>
+                  </Grid>
                 ) : (
-                  <Button variant="contained" color="primary" onClick={() => addToCart(game)}>Comprar</Button>
+                  <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
+                    <Button variant="contained" color="primary" onClick={() => addToCart(game)}>Comprar</Button>
+                    <Typography variant="body1" color="primary" > Disponible </Typography>
+                  </Grid>
                 )}
               </div>
             </Grid>

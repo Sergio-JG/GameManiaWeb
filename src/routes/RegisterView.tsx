@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { TextField, Typography, useTheme } from '@mui/material';
 
 import logo from '../images/logo.png';
@@ -11,6 +11,7 @@ import ImagenLogin from '../images/loginimage.jpg';
 const RegisterComponent: React.FC = () => {
 
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = React.useState({
     email: '',
@@ -76,7 +77,6 @@ const RegisterComponent: React.FC = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData)
     if (await validate()) {
       try {
         const response = await fetch('http://localhost:8080/user/register', {
@@ -86,16 +86,14 @@ const RegisterComponent: React.FC = () => {
           },
           body: JSON.stringify(formData),
         });
-
         if (response.ok) {
-          console.log('User authenticated:');
-        } else {
-          console.log('Authentication failed');
+          navigate('/login')
         }
       } catch (error) {
-        console.error('Error occurred:', error);
+        console.error('Error:', error);
       }
     }
+
   };
 
   return (
@@ -116,7 +114,7 @@ const RegisterComponent: React.FC = () => {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Correo electrónico"
               name="email"
               autoComplete="email"
               value={formData.email}
@@ -131,7 +129,7 @@ const RegisterComponent: React.FC = () => {
               required
               fullWidth
               id="password"
-              label="Password"
+              label="Contraseña"
               name="password"
               type="password"
               value={formData.password}
@@ -167,11 +165,11 @@ const RegisterComponent: React.FC = () => {
               sx={{ bgcolor: 'white' }}
             />
             {errors.lastName && <Typography variant="caption" color="error">{errors.lastName}</Typography>}
-            <Button type="submit" variant="contained" fullWidth> Register </Button>
+            <Button type="submit" variant="contained" fullWidth> Confirmar registro </Button>
             {errors.generalError && <Typography variant="caption" color="error">{errors.generalError}</Typography>}
             <Grid container sx={{ paddingTop: 2 }}>
               <Grid item xs>
-                <Link to='/login'>
+                <Link to='/login' style={{ color: 'white' }}>
                   {"Ya tengo una cuenta"}
                 </Link>
               </Grid>
