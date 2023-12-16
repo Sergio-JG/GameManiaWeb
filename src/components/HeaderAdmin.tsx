@@ -1,5 +1,4 @@
 import { AppBar, Toolbar, Grid, Typography } from "@mui/material";
-import { SetStateAction, useState } from "react";
 import { Link } from "react-router-dom";
 
 const headerStyles = {
@@ -10,11 +9,11 @@ const headerStyles = {
 
 const HeaderAdmin = () => {
 
-  const [activeLink, setActiveLink] = useState("/dashboard/game");
+  // const [activeLink, setActiveLink] = useState("/dashboard/game");
 
-  const handleLinkClick = (link: SetStateAction<string>) => {
-    setActiveLink(link);
-  };
+  // const handleLinkClick = (link: SetStateAction<string>) => {
+  //   setActiveLink(link);
+  // };
 
   return (
     <AppBar position="sticky" style={headerStyles}>

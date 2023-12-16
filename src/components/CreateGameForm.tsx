@@ -18,15 +18,15 @@ const CreateGameForm = ({ open, onClose }: OpenGameFormProps) => {
     const API_URL_PLATFORMS = 'http://localhost:8080/platform';
     const [platforms, setPlatforms] = useState<Platform[]>([]);
 
-    const [errors, setErrors] = React.useState({
-        title: '',
-        price: 0,
-        description: '',
-        releaseDate: '',
-        stock: 0,
-        genres: [],
-        platforms: [],
-    });
+    // const [errors, setErrors] = React.useState({
+    //     title: '',
+    //     price: 0,
+    //     description: '',
+    //     releaseDate: '',
+    //     stock: 0,
+    //     genres: [],
+    //     platforms: [],
+    // });
 
     const [formData, setFormData] = useState<Game>({
         title: '',

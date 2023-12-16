@@ -3,7 +3,7 @@ import { Avatar, Box, Button, Divider, Grid, List, ListItem, ListItemAvatar, Lis
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { CartContext } from '../components/CartContext';
-import CartItem, { SaleDetail, Game, User, Address, CreditCard, Sale } from '../interfaces/GameInterface';
+import CartItem, { User } from '../interfaces/GameInterface';
 import { ArrowRight } from '@mui/icons-material';
 import defaultPic from '../images/default.jpg';
 import axios from 'axios';
@@ -13,8 +13,9 @@ const BuyPlatform = () => {
 
     const { cart, getTotalPrice } = useContext(CartContext);
     const [userData, setUserData] = useState<User | null>(null);
-    const [saleData, setSaleData] = useState<Sale>({} as Sale);
-    const [saleDetailData, setSaleDetailData] = useState<SaleDetail>({} as SaleDetail);
+
+    // const [saleData, setSaleData] = useState<Sale>({} as Sale);
+    // const [saleDetailData, setSaleDetailData] = useState<SaleDetail>({} as SaleDetail);
 
 
     const fetchUserData = async () => {

@@ -35,13 +35,6 @@ const UserManage: React.FC = () => {
 
     const [users, setUsers] = useState<User[]>([]);
     const [page, setPage] = useState(1);
-    const [editMode, setEditMode] = useState(false);
-    const [editedUser, setEditedUser] = useState<User | undefined>();
-
-    const handleEdit = (user: User) => {
-        setEditedUser(user);
-        setEditMode(true);
-    };
 
     const initialState = {
         openAddressPopup: false,
@@ -121,36 +114,8 @@ const UserManage: React.FC = () => {
         dispatch({ type: 'CLOSE_SOCIAL_POPUP' });
     };
 
-    const handleSubmit = () => {
-        console.log(editedUser)
-        if (false) {
-            axios.put(API_URL)
-                .then((response) => {
-                    // Handle the response
-                })
-                .catch((error) => {
-                    // Handle the error
-                });
-        }
-    };
 
-    function handleFirstNameChange(value: string): void {
-        setEditedUser((prevUser) => prevUser ? { ...prevUser, firstName: value } : undefined);
-    }
-
-    function handleLastNameChange(value: string): void {
-        setEditedUser((prevUser) => prevUser ? { ...prevUser, lastName: value } : undefined);
-    }
-
-    function handlePhoneChange(value: string): void {
-        setEditedUser((prevUser) => prevUser ? { ...prevUser, phone: value } : undefined);
-    }
-
-    function handleFormOpen(event: any): void {
-    }
-
-    function handleCancel(event: any): void {
-        throw new Error('Function not implemented.');
+    function handleFormOpen(_event: any): void {
     }
 
     return (
@@ -185,39 +150,9 @@ const UserManage: React.FC = () => {
                                     <TableCell>{user.username}</TableCell>
                                     <TableCell> ***** </TableCell>
                                     <TableCell>{user.email}</TableCell>
-                                    <TableCell>
-                                        {editMode && user.userId == editedUser?.userId ? (
-                                            <input
-                                                type="text"
-                                                value={editedUser?.firstName}
-                                                onChange={(e) => handleFirstNameChange(e.target.value)}
-                                            />
-                                        ) : (
-                                            user.firstName
-                                        )}
-                                    </TableCell>
-                                    <TableCell>
-                                        {editMode && user.userId == editedUser?.userId ? (
-                                            <input
-                                                type="text"
-                                                value={editedUser?.lastName}
-                                                onChange={(e) => handleLastNameChange(e.target.value)}
-                                            />
-                                        ) : (
-                                            user.lastName
-                                        )}
-                                    </TableCell>
-                                    <TableCell>
-                                        {editMode && user.userId == editedUser?.userId ? (
-                                            <input
-                                                type="phone"
-                                                value={editedUser?.phone}
-                                                onChange={(e) => handlePhoneChange(e.target.value)}
-                                            />
-                                        ) : (
-                                            user.phone
-                                        )}
-                                    </TableCell>
+                                    <TableCell>{user.firstName}</TableCell>
+                                    <TableCell>{user.lastName}</TableCell>
+                                    <TableCell>{user.phone} </TableCell>
                                     <TableCell>{user.profilePic}</TableCell>
                                     <TableCell onClick={user.social ? () => handleSocialPopUp(user) : undefined}>
                                         {user.social ? 'ver social...' : 'No hay datos'}
@@ -231,30 +166,13 @@ const UserManage: React.FC = () => {
                                     <TableCell onClick={user.creditCard ? () => handleCreditCardPopUp(user) : undefined}>
                                         {user.creditCard ? 'ver creditCard...' : 'No hay datos'}
                                     </TableCell>
-                                    {editMode && user.userId == editedUser?.userId ? (
-                                        <>
-                                            <TableCell>
-                                                <Button onClick={handleSubmit} variant="contained" color="primary"> Save </Button>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Button onClick={handleCancel} variant="contained" color="secondary"> Cancel </Button>
-                                            </TableCell>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <TableCell>
-                                                <Button onClick={() => handleEdit(user)} variant="contained" color="secondary"> Modify </Button>
-                                            </TableCell>
-                                            <TableCell></TableCell>
-                                        </>
-                                    )}
                                 </TableRow>
                             ))}
                         </TableBody>
                         <Pagination
                             count={Math.ceil(users.length / 9)}
                             page={page}
-                            onChange={(event, value) => setPage(value)}
+                            onChange={(_event, value) => setPage(value)}
                         />
                     </Table>
                 </TableContainer>

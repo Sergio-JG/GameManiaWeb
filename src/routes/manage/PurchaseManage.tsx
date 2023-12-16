@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Purchase, PurchaseDetail } from '../../interfaces/GameInterface'
+import { Purchase } from '../../interfaces/GameInterface'
 import HeaderAdmin from '../../components/HeaderAdmin';
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Grid, Pagination, Typography } from '@mui/material';
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Grid, Pagination, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import FooterAdmin from '../../components/FooterAdmin';
 
@@ -56,7 +56,7 @@ const PurchaseManage: React.FC = () => {
                         <Pagination
                             count={Math.ceil(purchase.length / 9)}
                             page={page}
-                            onChange={(event, value) => setPage(value)}
+                            onChange={(_event, value) => setPage(value)}
                         />
                     </Table>
                 </TableContainer>

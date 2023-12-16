@@ -198,7 +198,7 @@ const GameManage: React.FC = () => {
                         <Pagination
                             count={Math.ceil(games.length / 9)}
                             page={page}
-                            onChange={(event, value) => setPage(value)}
+                            onChange={(_event, value) => setPage(value)}
                         />
                     </Table>
                 </TableContainer>
