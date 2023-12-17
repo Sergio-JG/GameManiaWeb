@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Purchase } from '../../interfaces/GameInterface'
+import { Purchase, PurchaseDetail } from '../../interfaces/GameInterface'
 import HeaderAdmin from '../../components/HeaderAdmin';
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Grid, Pagination, Typography } from '@mui/material';
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Grid, Pagination, Typography, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { useState, useEffect } from 'react';
 import FooterAdmin from '../../components/FooterAdmin';
 
@@ -26,6 +26,21 @@ const PurchaseManage: React.FC = () => {
         fetchSales();
     }, []);
 
+    {/* Purchase DETAILS */ }
+
+    const [openPurchaseDetailsDialog, setOpenPurchaseDetailsDialog] = useState(false);
+    const [selectedPurchase, setSelectedPurchase] = useState<Purchase>();
+
+    const handleOpenPurchaseDetailDialog = (Purchase: Purchase) => {
+        setSelectedPurchase(Purchase);
+        setOpenPurchaseDetailsDialog(true);
+    };
+
+    const handleClosePurchaseDetailDialog = () => {
+        setOpenPurchaseDetailsDialog(false);
+    };
+
+
     return (
         <div>
             <HeaderAdmin />
@@ -48,7 +63,7 @@ const PurchaseManage: React.FC = () => {
                                 <TableRow key={purchase.purchaseId}>
                                     <TableCell> {purchase.firstName} {purchase.secondName} </TableCell>
                                     <TableCell> {purchase.purchaseDate} </TableCell>
-                                    <TableCell> Purchase details </TableCell>
+                                    <TableCell onClick={() => handleOpenPurchaseDetailDialog(purchase)}> Detalle </TableCell>
                                     <TableCell> {purchase.totalAmount} </TableCell>
                                 </TableRow>
                             ))}
@@ -62,6 +77,17 @@ const PurchaseManage: React.FC = () => {
                 </TableContainer>
             </Grid>
             <FooterAdmin />
+            {/* SALE DETAIL */}
+            <Dialog open={openPurchaseDetailsDialog} onClose={handleClosePurchaseDetailDialog}>
+                <DialogTitle> Detalles de venta </DialogTitle>
+                <DialogContent>
+                    <div>
+                        {selectedPurchase?.purchaseDetail.map((purchaseDetail: PurchaseDetail) => (
+                            <Typography key={purchaseDetail.purchaseDetailId} variant="subtitle1">{purchaseDetail.gameName} : {purchaseDetail.quantity}: {purchaseDetail.subtotal}</Typography>
+                        ))}
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 };

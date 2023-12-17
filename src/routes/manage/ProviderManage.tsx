@@ -1,9 +1,10 @@
-import { Provider } from '../../interfaces/GameInterface'
+import { Account, Provider } from '../../interfaces/GameInterface'
 import HeaderAdmin from '../../components/HeaderAdmin';
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Pagination, Grid, Typography } from '@mui/material';
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Pagination, Grid, Typography, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { useState, useEffect } from 'react';
 import CreateProviderForm from '../../components/CreateProviderForm';
 import FooterAdmin from '../../components/FooterAdmin';
+import axios from 'axios';
 
 const ProviderManage: React.FC = () => {
 
@@ -42,13 +43,36 @@ const ProviderManage: React.FC = () => {
 
     useEffect(() => { fetchProviders(); }, []);
 
-    function handleAccountPopUp(_provider: Provider): void {
-        throw new Error('Function not implemented.');
-    }
-
     const handleFormOpen = () => {
         setOpen(true);
     };
+
+    {/* ACCOUNT */ }
+
+    const [openAccountDialog, setOpenAccountDialog] = useState(false);
+    const [selectedProvider, setSelectedProvider] = useState({} as Provider);
+
+    const handleOpenAccountDialog = (provider: Provider) => {
+        setSelectedProvider(provider);
+        setOpenAccountDialog(true);
+    };
+
+    const handleCloseAccountDialog = () => {
+        setOpenAccountDialog(false);
+    };
+
+    {/* ELIMINACION */ }
+
+    function handleElimination(provider: Provider): void {
+        axios.delete(API_URL + "/" + provider.providerId)
+            .then(response => {
+                alert('Eliminado con exito' + response.data);
+            })
+            .catch(error => {
+                alert('No se pueden eliminar un provedor asociado a compras o ventas');
+            });
+    }
+
 
     return (
         <div>
@@ -57,16 +81,15 @@ const ProviderManage: React.FC = () => {
                 <Typography variant='h3'> Gestión de proveedores </Typography>
             </Grid>
             <Grid padding={5}>
-                <TableContainer component={Paper} sx={{ minHeight: '58vh' }}>
+                <TableContainer component={Paper} sx={{ minHeight: '57.5vh' }}>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Address</TableCell>
-                                <TableCell>Phone</TableCell>
-                                <TableCell>Mail</TableCell>
-                                <TableCell>Account</TableCell>
-                                <TableCell></TableCell>
+                                <TableCell>Nombre</TableCell>
+                                <TableCell>Dirección</TableCell>
+                                <TableCell>Teléfono</TableCell>
+                                <TableCell>Email</TableCell>
+                                <TableCell>Cuenta</TableCell>
                                 <TableCell></TableCell>
                             </TableRow>
                         </TableHead>
@@ -79,8 +102,15 @@ const ProviderManage: React.FC = () => {
                                         <TableCell>{provider.address}</TableCell>
                                         <TableCell>{provider.phone}</TableCell>
                                         <TableCell>{provider.email}</TableCell>
-                                        <TableCell onClick={provider.account ? () => handleAccountPopUp(provider) : undefined}>
-                                            {provider.account ? 'ver social...' : 'No hay datos'}
+                                        {provider.account ? (
+                                            <TableCell onClick={() => handleOpenAccountDialog(provider)}> Cuenta </TableCell>
+                                        ) : (
+                                            <TableCell> No hay cuenta </TableCell>
+                                        )}
+                                        <TableCell>
+                                            <Button onClick={() => handleElimination(provider)} variant="contained" color="error">
+                                                Eliminar
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -98,6 +128,18 @@ const ProviderManage: React.FC = () => {
             </Grid>
             <FooterAdmin />
             <CreateProviderForm open={open} onClose={handleFormClose} />
+
+            {/* ACCOUNT */}
+            <Dialog open={openAccountDialog} onClose={handleCloseAccountDialog}>
+                <DialogTitle> Datos de la cuenta </DialogTitle>
+                <DialogContent>
+                    <div>
+                        {selectedProvider?.account && Array.isArray(selectedProvider.account) && selectedProvider.account.map((account: Account) => (
+                            <Typography key={account.accountId} variant="subtitle1">{account.accountHolderName}: {account.accountBalance}</Typography>
+                        ))}
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div >
     );
 };

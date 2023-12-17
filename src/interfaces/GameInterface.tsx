@@ -19,7 +19,7 @@ export interface Account {
     providerId: string;
     provider: Provider;
     accountHolderName: string;
-    accoutnName: string;
+    accountName: string;
     bankName: string;
     bankAddress: string;
     bankRoutingNumber: string;
@@ -121,11 +121,12 @@ export interface Sale {
 }
 
 export interface PurchaseDetail {
-    purchaseDetailId: string;
-    purchaseId: string;
+    unitPrice: string;
+    gameName: string;
+    purchaseDetailId?: string;
+    saleId?: string;
     game: Game;
     quantity: number | null;
-    unitPrice: number | null;
     subtotal: number | null;
 }
 
@@ -135,7 +136,7 @@ export interface Purchase {
     secondName: string;
     purchaseDate: string | null;
     totalAmount: number | null;
-    purchaseDetails: PurchaseDetail[];
+    purchaseDetail: PurchaseDetail[];
 }
 
 export interface CartItem {

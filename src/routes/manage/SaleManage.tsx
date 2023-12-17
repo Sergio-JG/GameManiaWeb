@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Sale } from '../../interfaces/GameInterface'
+import { Genre, Sale, SaleDetail } from '../../interfaces/GameInterface'
 import HeaderAdmin from '../../components/HeaderAdmin';
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Grid, Pagination, Typography } from '@mui/material';
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Grid, Pagination, Typography, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { useState, useEffect } from 'react';
 import FooterAdmin from '../../components/FooterAdmin';
 
@@ -26,6 +26,20 @@ const SaleManage: React.FC = () => {
         fetchSales();
     }, []);
 
+    {/* SALEDETAILS */ }
+
+    const [openSaleDetailsDialog, setOpenSaleDetailsDialog] = useState(false);
+    const [selectedSale, setSelectedSale] = useState<Sale>();
+
+    const handleOpenSaleDetailDialog = (sale: Sale) => {
+        setSelectedSale(sale);
+        setOpenSaleDetailsDialog(true);
+    };
+
+    const handleCloseSaleDetailDialog = () => {
+        setOpenSaleDetailsDialog(false);
+    };
+
     return (
         <div>
             <HeaderAdmin />
@@ -39,7 +53,7 @@ const SaleManage: React.FC = () => {
                             <TableRow>
                                 <TableCell>User</TableCell>
                                 <TableCell>Fecha de realizacion</TableCell>
-                                <TableCell>Detalles de compra</TableCell>
+                                <TableCell>Detalles de venta</TableCell>
                                 <TableCell>Total</TableCell>
                             </TableRow>
                         </TableHead>
@@ -48,7 +62,7 @@ const SaleManage: React.FC = () => {
                                 <TableRow key={sale.saleId}>
                                     <TableCell> {sale.firstName} {sale.secondName} </TableCell>
                                     <TableCell> {sale.saleDate} </TableCell>
-                                    <TableCell> Sale details </TableCell>
+                                    <TableCell onClick={() => handleOpenSaleDetailDialog(sale)}> Sale details </TableCell>
                                     <TableCell> {sale.totalAmount} </TableCell>
                                 </TableRow>
                             ))}
@@ -62,6 +76,19 @@ const SaleManage: React.FC = () => {
                 </TableContainer>
             </Grid>
             <FooterAdmin />
+
+            {/* SALE DETAIL */}
+            <Dialog open={openSaleDetailsDialog} onClose={handleCloseSaleDetailDialog}>
+                <DialogTitle> Detalles de venta </DialogTitle>
+                <DialogContent>
+                    <div>
+                        {selectedSale?.saleDetail.map((saleDetail: SaleDetail) => (
+                            <Typography key={saleDetail.sale_detail_id} variant="subtitle1">{saleDetail.gameName} : {saleDetail.quantity}: {saleDetail.subtotal}</Typography>
+                        ))}
+                    </div>
+                </DialogContent>
+            </Dialog>
+
         </div>
     );
 };

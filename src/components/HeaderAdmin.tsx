@@ -20,19 +20,19 @@ const HeaderAdmin = () => {
       <Toolbar>
         <Grid container justifyContent="space-evenly">
           <Link to="/dashboard/game" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">Game</Typography>
+            <Typography color="inherit">Gestión de juegos</Typography>
           </Link>
           <Link to="/dashboard/provider" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">Provider</Typography>
+            <Typography color="inherit">Gestión de proveedores</Typography>
           </Link>
           <Link to="/dashboard/user" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">User</Typography>
+            <Typography color="inherit">Gestión de usuarios</Typography>
           </Link>
           <Link to="/dashboard/purchase" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">Purchase</Typography>
+            <Typography color="inherit">Gestión de compras</Typography>
           </Link>
           <Link to="/dashboard/sale" style={{ textDecoration: 'none', color: "white" }}>
-            <Typography color="inherit">Sale</Typography>
+            <Typography color="inherit">Gestión de ventas</Typography>
           </Link>
         </Grid>
       </Toolbar>

@@ -114,10 +114,6 @@ const UserManage: React.FC = () => {
         dispatch({ type: 'CLOSE_SOCIAL_POPUP' });
     };
 
-
-    function handleFormOpen(_event: any): void {
-    }
-
     return (
         <div>
             <HeaderAdmin />
@@ -125,7 +121,7 @@ const UserManage: React.FC = () => {
                 <Typography variant='h3'> Gestión de usuarios </Typography>
             </Grid>
             <Grid padding={5}>
-                <TableContainer component={Paper} sx={{ minHeight: '54vh' }}>
+                <TableContainer component={Paper} sx={{ minHeight: '61vh' }}>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -140,8 +136,6 @@ const UserManage: React.FC = () => {
                                 <TableCell>Rol</TableCell>
                                 <TableCell>Direccion</TableCell>
                                 <TableCell>Tarjeta de credito</TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -176,9 +170,6 @@ const UserManage: React.FC = () => {
                         />
                     </Table>
                 </TableContainer>
-                <Grid container justifyContent="flex-end" paddingY={2} height={40}>
-                    <Button onClick={handleFormOpen} variant="contained" color="success"> Crear </Button>
-                </Grid>
             </Grid>
             <FooterAdmin />
             <CreditCardDialog open={state.openCreditCardPopup} onClose={handleCreditCardPopUpClose} selectedUser={state.selectedUser} />
