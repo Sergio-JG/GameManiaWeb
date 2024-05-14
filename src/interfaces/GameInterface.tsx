@@ -1,5 +1,5 @@
 export interface Game {
-    gameId?: string;
+    gameId: string;
     title: string;
     price: number;
     description: string;
@@ -8,9 +8,21 @@ export interface Game {
     totalScore?: number;
     image?: string;
     stock: number;
+    discount: number;
     genres: Genre[];
     platforms: Platform[];
     reviews?: Review[];
+}
+
+export interface CartItem {
+    gameId: string;
+    title: string;
+    price: number;
+    quantity: number;
+    platform: Platform;
+    image?: string;
+    stock: number;
+    discount: number;
 }
 
 export interface Account {
@@ -49,6 +61,8 @@ export interface Platform {
 export interface Review {
     reviewId: string;
     userId: string;
+    username: string;
+    profilePic: string;
     gameId: string;
     score: number;
     comment: string;
@@ -137,22 +151,6 @@ export interface Purchase {
     purchaseDate: string | null;
     totalAmount: number | null;
     purchaseDetail: PurchaseDetail[];
-}
-
-export interface CartItem {
-    quantity: number;
-    gameId: string;
-    title: string;
-    price: number;
-    description: string;
-    releaseDate: string;
-    numberOfSales: number;
-    totalScore?: number;
-    image?: string;
-    stock: number;
-    genres: Genre[];
-    platforms: Platform[];
-    reviews?: Review[];
 }
 
 export default CartItem

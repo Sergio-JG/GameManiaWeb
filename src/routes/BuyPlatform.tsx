@@ -7,7 +7,7 @@ import CartItem, { User } from '../interfaces/GameInterface';
 import { ArrowRight } from '@mui/icons-material';
 import defaultPic from '../images/default.jpg';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const BuyPlatform = () => {
 
@@ -16,7 +16,6 @@ const BuyPlatform = () => {
 
     // const [saleData, setSaleData] = useState<Sale>({} as Sale);
     // const [saleDetailData, setSaleDetailData] = useState<SaleDetail>({} as SaleDetail);
-
 
     const fetchUserData = async () => {
         try {
@@ -35,7 +34,6 @@ const BuyPlatform = () => {
     useEffect(() => { fetchUserData() }, []);
 
     const generateSaleData = (cart: CartItem[]) => {
-
         const userId = localStorage.getItem('userId') || sessionStorage.getItem('userId') || '';
         const saleDate = new Date().toISOString().split('T')[0];
 
@@ -52,10 +50,40 @@ const BuyPlatform = () => {
         };
     };
 
+    const updateStocks = async (cart: CartItem[]) => {
+
+        const API_URL = 'http://localhost:8080/game';
+        console.log(cart);
+
+        cart.forEach(async (cartItem: CartItem) => {
+            console.log(cartItem)
+            const newStock = cartItem.stock - cartItem.quantity;
+            cartItem.stock = newStock;
+            try {
+                const response = await fetch(`${API_URL}/${cartItem?.gameId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(cartItem),
+                });
+
+                if (response.ok) {
+                    console.log("update")
+                }
+
+            } catch (error) {
+                console.error('Error updating stock:', error);
+            }
+        });
+    }
+
+    const navigate = useNavigate();
+
     const handleConfirmSale = async () => {
 
+        updateStocks(cart);
         let saleData = generateSaleData(cart);
-        console.log(saleData)
         try {
             const response = await axios.post('http://localhost:8080/sale', saleData, {
                 headers: {
@@ -63,6 +91,7 @@ const BuyPlatform = () => {
                 },
             });
             if (response.status === 201) {
+                navigate("/profile");
                 console.log('Confirmado');
             } else {
                 console.error('Failed to confirm sale');
@@ -75,7 +104,7 @@ const BuyPlatform = () => {
     return (
         <>
             <Header />
-            <Grid container sx={{ minHeight: '50vh' }}>
+            <Grid container sx={{ minHeight: '60vh' }}>
                 <Grid item xs={12} sm={6} md={7}>
                     <Grid direction="column" alignItems="center" justifyContent="center" style={{ width: '100%', padding: 20, margin: 20 }}>
                         <Grid item display='flex' alignItems="center" justifyContent="left" margin='25px'>
@@ -217,4 +246,6 @@ const BuyPlatform = () => {
 };
 
 export default BuyPlatform;
+
+
 

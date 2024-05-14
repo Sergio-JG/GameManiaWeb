@@ -77,6 +77,7 @@ const CreateGameForm = ({ open, onClose }: OpenGameFormProps) => {
 
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const formatedFormData = (formData: any) => {
         const formDataCopy = { ...formData };
 
@@ -108,7 +109,7 @@ const CreateGameForm = ({ open, onClose }: OpenGameFormProps) => {
         <Modal open={open} onClose={onClose} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Grid component="form" onSubmit={handleSubmit} noValidate sx={{ border: 'solid', bgcolor: 'white' }}>
                 <Grid sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 5 }}>
-                    <Typography variant='h3' sx={{ padding: 3 }}> AÑADIR NUEVO JUEGO </Typography>
+                    <Typography variant='h3' sx={{ padding: 3 }}> Añadir juego nuevo </Typography>
                     <Typography> Titulo </Typography>
                     <TextField
                         margin="normal"

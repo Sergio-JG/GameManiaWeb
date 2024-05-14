@@ -8,20 +8,10 @@ import { useContext, useEffect, useState } from 'react';
 import React from 'react';
 import SearchComponent from './SearchComponent';
 
-const headerStyles = {
-  background: 'black',
-  color: 'white',
-  padding: 10,
-};
-
-const iconStyles = {
-  color: 'yellow',
-};
-
 const HeaderComponent = () => {
 
   const { toggleCart, totalItemsInCart } = useContext(CartContext);
-  const [userId, setUserId] = useState<String>();
+  const [userId, setUserId] = useState<string>();
 
   useEffect(() => {
 
@@ -56,7 +46,11 @@ const HeaderComponent = () => {
   };
 
   return (
-    <AppBar position="sticky" style={headerStyles}>
+    <AppBar position="sticky" style={{
+      background: 'black',
+      color: 'white',
+      padding: 10,
+    }}>
       <Toolbar>
         <Grid container alignItems="center">
           <Grid item xs={4}>
@@ -72,7 +66,7 @@ const HeaderComponent = () => {
           <Grid item xs={4}>
             <ul style={{ listStyle: 'none', display: 'flex', justifyContent: 'right' }}>
               <li>
-                <IconButton style={iconStyles} onClick={toggleCart}>
+                <IconButton style={{ color: 'yellow' }} onClick={toggleCart}>
                   <Badge badgeContent={totalItemsInCart} color="primary">
                     <ShoppingCart />
                   </Badge>
@@ -81,7 +75,7 @@ const HeaderComponent = () => {
               <li>
                 {userId ? (
                   <>
-                    <IconButton style={iconStyles} onClick={handleClick}>
+                    <IconButton style={{ color: 'yellow' }} onClick={handleClick}>
                       <Face2 />
                     </IconButton>
 
@@ -102,7 +96,7 @@ const HeaderComponent = () => {
                   </>
                 ) : (
                   <Link to={`/login`}>
-                    <IconButton style={iconStyles}>
+                    <IconButton style={{ color: 'yellow' }}>
                       <AccountCircle />
                     </IconButton>
                   </Link>

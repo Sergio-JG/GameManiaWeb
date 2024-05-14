@@ -9,12 +9,6 @@ const headerStyles = {
 
 const HeaderAdmin = () => {
 
-  // const [activeLink, setActiveLink] = useState("/dashboard/game");
-
-  // const handleLinkClick = (link: SetStateAction<string>) => {
-  //   setActiveLink(link);
-  // };
-
   return (
     <AppBar position="sticky" style={headerStyles}>
       <Toolbar>

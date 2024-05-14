@@ -2,7 +2,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { Route, Routes } from 'react-router-dom';
 import './styles/App.css';
-import theme from './styles/themes'; // Import the theme
+import theme from './styles/themes';
 
 import GameDetailView from './routes/GameDetailView';
 

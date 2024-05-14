@@ -4,16 +4,9 @@ import Search from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
 import GameInterface from '../interfaces/GameInterface';
 
-const searchStyles: React.CSSProperties = {
-    backgroundColor: 'white',
-    borderRadius: '5px',
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    position: 'relative', // To position the search results relative to the search bar
-};
 
 const SearchComponent: React.FC = () => {
+
     const [query, setQuery] = useState<string>('');
     const [results, setResults] = useState<GameInterface[]>([]);
     const [games, setGames] = useState<GameInterface[]>([]);
@@ -29,12 +22,12 @@ const SearchComponent: React.FC = () => {
             game.title.toLowerCase().includes(searchQuery.toLowerCase())
         );
         setResults(filteredResults);
-        setShowResults(!!searchQuery); // Show results if there's a search query
+        setShowResults(!!searchQuery);
     };
 
     const handleClickOutside = (event: MouseEvent) => {
         if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-            setShowResults(false); // Close search results if clicked outside the container
+            setShowResults(false);
         }
     };
 
@@ -54,33 +47,30 @@ const SearchComponent: React.FC = () => {
 
         fetchData();
 
-        // Attach event listener when the component mounts
         document.body.addEventListener('click', handleClickOutside);
-
-        // Clean up the event listener when the component unmounts
         return () => {
             document.body.removeEventListener('click', handleClickOutside);
         };
     }, []);
 
     return (
-        <Grid item xs={4}>
-            <div style={searchStyles} ref={searchRef}>
-                <InputBase
-                    sx={{ marginInlineStart: 2 }}
-                    placeholder="Search..."
-                    inputProps={{ 'aria-label': 'search' }}
-                    style={{ width: '100%' }}
-                    onChange={handleSearch}
-                    value={query}
-                />
-                <IconButton aria-label="search">
-                    <Search />
-                </IconButton>
-            </div>
+        <Grid item xs={4} style={{ position: 'sticky' }}>
+            <InputBase
+                sx={{ padding: '10px', fontSize: '1rem', border: '1px solid yellow', borderRadius: '4px', background: 'white' }}
+                placeholder="Search games..."
+                style={{ width: '100%' }}
+                onChange={handleSearch}
+                value={query}
+                endAdornment={
+                    <IconButton>
+                        <Search />
+                    </IconButton>
+                }
+            />
+
             {showResults && (
-                <div style={{ position: 'absolute', top: '70%', left: 0, right: 0, width: 1248, paddingInlineStart: 635 }}>
-                    <Paper>
+                <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, width: '100%' }}>
+                    <Paper style={{ animation: 'fadeIn 1s', borderRadius: '4px', borderTop: 'none' }}>
                         <Stack spacing={2}>
                             {results.map((game: GameInterface) => (
                                 <ListItem key={game.gameId}>

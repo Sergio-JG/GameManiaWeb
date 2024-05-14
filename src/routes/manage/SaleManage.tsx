@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Genre, Sale, SaleDetail } from '../../interfaces/GameInterface'
+import { Sale, SaleDetail } from '../../interfaces/GameInterface'
 import HeaderAdmin from '../../components/HeaderAdmin';
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Grid, Pagination, Typography, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { useState, useEffect } from 'react';

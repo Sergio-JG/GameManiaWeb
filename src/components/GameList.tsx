@@ -1,167 +1,168 @@
-import { useState, useEffect, useContext } from 'react';
-import Button from '@mui/material/Button';
 import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import GameInterface from '../interfaces/GameInterface';
-import ImagenLogin from '../../public/images/games/Cyberpunk2077.jpg';
-import { CartContext } from '../components/CartContext';
+import { Game } from '../interfaces/GameInterface';
+
+import { Chip } from '@mui/material';
 import axios from 'axios';
 
 const GameList = () => {
 
-  const [games, setGames] = useState<GameInterface[]>([]);
-  const { addToCart } = useContext(CartContext);
+  const [games, setGames] = useState<Game[]>([]);
 
-  const IMAGEN_URL = '/images/games/';
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  const fetchGames = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/game');
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/game`);
       if (response.status === 200) {
         const result = response.data;
         setGames(result);
-        console.log(result);
       } else {
-        throw new Error('ERROR');
+        throw new Error('ERROR fetching data:');
       }
     } catch (error) {
       console.error('ERROR fetching data:', error);
     }
   };
 
-  const popularGames = [...games].sort((a, b) => b.numberOfSales - a.numberOfSales);
-  const lastReleasedGames = [...games].sort((a, b) => new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime());
-  const offerGames = games.filter(game => game.price < 20);
+  const truncateText = (text: string, maxLength: number) => {
+    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+  };
+
+  useEffect(() => {
+    fetchGames();
+  }, []);
+
+  const popularGames = useMemo(() => [...games].sort((a, b) => b.numberOfSales - a.numberOfSales), [games]);
+  const lastReleasedGames = useMemo(() => [...games].sort((a, b) => new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime()), [games]);
+  const discountedGames = useMemo(() => games.filter(game => game.discount != 0), [games]);
 
   return (
-    <Grid container justifyContent="center" alignItems="center">
-      <Grid item xs={12}>
-        <img src={ImagenLogin} alt="Big" style={{ width: '100%', height: 600, objectFit: 'cover' }} />
-      </Grid>
-      <Grid item xs={12} style={{ padding: '20px 30px' }}>
-        <Typography variant="h4" style={{ padding: '20px' }}> Ultimos lanzamientos </Typography>
-        <Grid container spacing={6}>
+    <>
+
+      {/* LAST  RELEASE */}
+      <Grid item xs={12} sx={{ paddingX: 30, paddingTop: 5 }}>
+        <Typography variant="h4" color="white" fontFamily={'Roboto'} style={{ marginBottom: 20 }}> Ultimos lanzamientos </Typography>
+        <Grid container spacing={12}>
           {lastReleasedGames.map((game, index) => (
             <Grid key={index} item xs={12} sm={6} md={4}>
-              <div style={{ border: '1px solid #ccc', padding: '10px', height: '100%' }}>
+              <div>
                 <Link to={`/game/${game.gameId}`}>
                   <CardMedia
+                    style={{ borderRadius: 25 }}
                     component="img"
                     alt={game.title}
-                    height="200"
-                    image={IMAGEN_URL + game.image}
+                    height='200px'
+                    image={import.meta.env.VITE_GAME_IMAGES_URL + game.image}
                   />
                 </Link>
-                <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
-                  <Grid item>
-                    <Typography variant="h6"> {game.title} </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="h3" color="black">{`${game.price}€`}</Typography>
+                <Grid sx={{ paddingTop: 2 }}>
+                  <Grid container justifyContent="space-between" alignItems="center" color={'white'}>
+                    <Typography fontFamily={'Roboto'} variant="h5">
+                      {truncateText(game.title, 30)}
+
+                    </Typography>
+                    <Typography fontFamily={'Roboto'} variant="h5">{`${(game.price - (game.price * (game.discount / 100))).toFixed(2)}€`}</Typography>
                   </Grid>
                 </Grid>
-                {game.stock === 0 ? (
-                  <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
-                    <Typography variant="body1" color="primary" > </Typography>
-                    <Typography variant="body1" color="error" > No Disponible </Typography>
-                  </Grid>
-                ) : (
-                  <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
-                    <Button variant="contained" color="primary" onClick={() => addToCart(game)}>Comprar</Button>
-                    <Typography variant="body1" color="primary" > Disponible </Typography>
-                  </Grid>
-                )}
               </div>
+              {game.stock === 0 ? (
+                <Grid container justifyContent="space-between" alignItems="center" style={{ paddingTop: 10 }}>
+                  <Chip label="No disponible" color="error" variant="filled" />
+                </Grid>
+              ) : (
+                <Grid container justifyContent="space-between" alignItems="center" style={{ paddingTop: 10 }}>
+                  <Chip label="Disponible" color="info" variant="filled" />
+                </Grid>
+              )}
             </Grid>
           ))}
         </Grid>
       </Grid>
-      <Grid item xs={12} style={{ padding: '20px 30px' }}>
-        <Typography variant="h4" style={{ padding: '20px' }}> Ofertas </Typography>
-        <Grid container spacing={6}>
-          {offerGames.map((game, index) => (
-            <Grid key={index} item xs={12} sm={6} md={4}>
-              <div style={{ border: '1px solid #ccc', padding: '10px', height: '100%' }}>
-                <Link to={`/game/${game.gameId}`}>
-                  <CardMedia
-                    component="img"
-                    alt={game.title}
-                    height="200"
-                    image={IMAGEN_URL + game.image}
-                  />
-                </Link>
-                <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
-                  <Grid item>
-                    <Typography variant="h6"> {game.title} </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="h4" color="red" style={{ textDecoration: 'line-through' }}>{`${game.price}€`}</Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="h4" color="black">{`${(game.price - (game.price * (20 / 100))).toFixed(2)}€`}</Typography>
-                  </Grid>
-                </Grid>
-                {game.stock === 0 ? (
-                  <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
-                    <Typography variant="body1" color="primary" > </Typography>
-                    <Typography variant="body1" color="error" > No Disponible </Typography>
-                  </Grid>
-                ) : (
-                  <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
-                    <Button variant="contained" color="primary" onClick={() => addToCart(game)}>Comprar</Button>
-                    <Typography variant="body1" color="primary" > Disponible </Typography>
-                  </Grid>
-                )}
-              </div>
-            </Grid>
-          ))}
-        </Grid>
-      </Grid>
-      <Grid item xs={12} style={{ padding: '20px 30px' }}>
-        <Typography variant="h4" style={{ padding: '20px' }}> Más vendidos </Typography>
-        <Grid container spacing={6}>
+
+      {/* POPULAR */}
+      <Grid item xs={12} sx={{ paddingX: 30, paddingY: 10 }}>
+        <Typography variant="h4" color="white" fontFamily={'Roboto'} style={{ marginBottom: 20 }}> Más vendidos </Typography>
+        <Grid container spacing={12}>
           {popularGames.map((game, index) => (
             <Grid key={index} item xs={12} sm={6} md={4}>
-              <div style={{ border: '1px solid #ccc', padding: '10px', height: '100%' }}>
+              <div>
                 <Link to={`/game/${game.gameId}`}>
                   <CardMedia
+                    style={{ borderRadius: 25 }}
                     component="img"
                     alt={game.title}
-                    height="200"
-                    image={IMAGEN_URL + game.image}
+                    height='200px'
+                    image={import.meta.env.VITE_GAME_IMAGES_URL + game.image}
                   />
                 </Link>
-                <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
-                  <Grid item>
-                    <Typography variant="h6"> {game.title} </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="h3" color="black">{`${game.price}€`}</Typography>
+                <Grid sx={{ paddingTop: 2 }}>
+                  <Grid container justifyContent="space-between" alignItems="center" color={'white'}>
+                    <Typography fontFamily={'Roboto'} variant="h5">
+                      {truncateText(game.title, 30)}
+                    </Typography>
+                    <Typography fontFamily={'Roboto'} variant="h5">{`${(game.price - (game.price * (game.discount / 100))).toFixed(2)}€`}</Typography>
                   </Grid>
                 </Grid>
-                {game.stock === 0 ? (
-                  <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
-                    <Typography variant="body1" color="primary" > </Typography>
-                    <Typography variant="body1" color="error" > No Disponible </Typography>
-                  </Grid>
-                ) : (
-                  <Grid container justifyContent="space-between" alignItems="center" style={{ padding: 10 }}>
-                    <Button variant="contained" color="primary" onClick={() => addToCart(game)}>Comprar</Button>
-                    <Typography variant="body1" color="primary" > Disponible </Typography>
-                  </Grid>
-                )}
               </div>
+              {game.stock === 0 ? (
+                <Grid container justifyContent="space-between" alignItems="center" style={{ paddingTop: 10 }}>
+                  <Chip label="No disponible" color="error" variant="filled" />
+                </Grid>
+              ) : (
+                <Grid container justifyContent="space-between" alignItems="center" style={{ paddingTop: 10 }}>
+                  <Chip label="Disponible" color="info" variant="filled" />
+                </Grid>
+              )}
             </Grid>
           ))}
         </Grid>
       </Grid>
-    </Grid>
+
+      {/* DISCOUNTED */}
+      <Grid item xs={12} sx={{ paddingX: 30, paddingBottom: 10 }}>
+        <Typography variant="h4" color="white" fontFamily={'Roboto'} style={{ paddingBottom: 20 }}> Ultimos lanzamientos </Typography>
+        <Grid container spacing={12}>
+          {discountedGames.map((game, index) => (
+            <Grid key={index} item xs={12} sm={6} md={4}>
+              <div>
+                <Chip label={`${game.discount}%`} size='medium' color='primary' variant='filled' style={{ fontSize: 20, position: 'absolute', marginInlineStart: 360, color: 'black' }} />
+                <Link to={`/game/${game.gameId}`}>
+                  <CardMedia
+                    style={{ borderRadius: 25 }}
+                    component="img"
+                    alt={game.title}
+                    height='200px'
+                    image={import.meta.env.VITE_GAME_IMAGES_URL + game.image}
+                  />
+                </Link>
+                <Grid sx={{ paddingTop: 2 }}>
+                  <Grid container justifyContent="space-between" alignItems="center" color={'white'}>
+                    <Typography fontFamily={'Roboto'} variant="h5">
+                      {truncateText(game.title, 30)}
+
+                    </Typography>
+                    <Typography fontFamily={'Roboto'} variant="h5">{`${(game.price - (game.price * (game.discount / 100))).toFixed(2)}€`}</Typography>
+                  </Grid>
+                </Grid>
+              </div>
+              {game.stock === 0 ? (
+                <Grid container justifyContent="space-between" alignItems="center" style={{ paddingTop: 10 }}>
+                  <Chip label="No disponible" color="error" variant="filled" />
+                </Grid>
+              ) : (
+                <Grid container justifyContent="space-between" alignItems="center" style={{ paddingTop: 10 }}>
+                  <Chip label="Disponible" color="info" variant="filled" />
+                </Grid>
+              )}
+            </Grid>
+          ))}
+        </Grid>
+      </Grid>
+
+    </>
+
   );
 }
 

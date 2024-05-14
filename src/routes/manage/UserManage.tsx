@@ -4,7 +4,7 @@ import SocialDialog from '../../components/dialog/SocialDialog';
 import axios from 'axios';
 import { User } from '../../interfaces/GameInterface'
 import HeaderAdmin from '../../components/HeaderAdmin';
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Grid, Pagination, Typography } from '@mui/material';
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Grid, Pagination, Typography } from '@mui/material';
 import { useState, useReducer, useEffect } from 'react';
 import FooterAdmin from '../../components/FooterAdmin';
 import AddressDialog from '../../components/dialog/AddressDialog';
@@ -15,6 +15,7 @@ const UserManage: React.FC = () => {
     const API_URL = 'http://localhost:8080/user';
 
     type StateType = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         openCreditCardPopup: any;
         openAddressPopup: boolean;
         openRolePopup: boolean;

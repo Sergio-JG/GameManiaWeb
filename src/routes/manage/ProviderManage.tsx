@@ -68,7 +68,7 @@ const ProviderManage: React.FC = () => {
             .then(response => {
                 alert('Eliminado con exito' + response.data);
             })
-            .catch(error => {
+            .catch(() => {
                 alert('No se pueden eliminar un provedor asociado a compras o ventas');
             });
     }

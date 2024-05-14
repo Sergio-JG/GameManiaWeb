@@ -1,14 +1,14 @@
 import { Avatar, Button, Divider, Drawer, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import GameInterface from '../interfaces/GameInterface';
+import { CartItem } from '../interfaces/GameInterface';
 import { Remove } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 export const CartContext = createContext<{
-    cart: GameInterface[];
-    setCart: React.Dispatch<React.SetStateAction<GameInterface[]>>;
+    cart: CartItem[];
+    setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
     isCartOpen: boolean;
-    addToCart: (game: GameInterface) => void;
+    addToCart: (game: CartItem) => void;
     removeFromCart: (gameId: string) => void;
     toggleCart: () => void;
     getTotalPrice: () => number;
@@ -27,12 +27,12 @@ export const CartContext = createContext<{
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     const cartFromLocalStorage = JSON.parse(localStorage.getItem('cart') || '[]');
-    const [cart, setCart] = useState<GameInterface[]>(cartFromLocalStorage);
+    const [cart, setCart] = useState<CartItem[]>(cartFromLocalStorage);
     const drawerHeight = 300 + cart.length * 80;
     const [isCartOpen, setCartOpen] = useState(false);
     const navigate = useNavigate();
 
-    const saveCartToLocalStorage = (cartData: GameInterface[]) => {
+    const saveCartToLocalStorage = (cartData: CartItem[]) => {
         localStorage.setItem('cart', JSON.stringify(cartData));
     };
 
@@ -42,7 +42,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         saveCartToLocalStorage(updatedCart);
     };
 
-    const addToCart = (game: GameInterface) => {
+    const addToCart = (game: CartItem) => {
         const existingGame = cart.find((item) => item.gameId === game.gameId);
 
         if (existingGame) {

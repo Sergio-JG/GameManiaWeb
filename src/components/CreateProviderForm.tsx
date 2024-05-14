@@ -38,8 +38,8 @@ const CreateProviderForm = ({ open, onClose }: OpenProviderFormProps) => {
         <Modal open={open} onClose={onClose} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Grid component="form" onSubmit={handleSubmit} noValidate sx={{ border: 'solid', bgcolor: 'white' }}>
                 <Grid sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 5 }}>
-                    <Typography variant='h3' sx={{ padding: 3 }}> Add New Provider </Typography>
-                    <Typography> Name </Typography>
+                    <Typography variant='h3' sx={{ padding: 3 }}> Añadir un nuevo proveedor </Typography>
+                    <Typography> Nombre </Typography>
                     <TextField
                         margin="normal"
                         required
@@ -50,7 +50,7 @@ const CreateProviderForm = ({ open, onClose }: OpenProviderFormProps) => {
                         onChange={handleChange}
                         sx={{ bgcolor: 'white', width: 400 }}
                     />
-                    <Typography> Address </Typography>
+                    <Typography> Direccion </Typography>
                     <TextField
                         margin="normal"
                         required
@@ -61,7 +61,7 @@ const CreateProviderForm = ({ open, onClose }: OpenProviderFormProps) => {
                         onChange={handleChange}
                         sx={{ bgcolor: 'white', width: 400 }}
                     />
-                    <Typography> Phone </Typography>
+                    <Typography> Teléfono </Typography>
                     <TextField
                         margin="normal"
                         required
@@ -72,7 +72,7 @@ const CreateProviderForm = ({ open, onClose }: OpenProviderFormProps) => {
                         onChange={handleChange}
                         sx={{ bgcolor: 'white', width: 400 }}
                     />
-                    <Typography> Email </Typography>
+                    <Typography> Correo electrónico </Typography>
                     <TextField
                         margin="normal"
                         required

@@ -49,12 +49,6 @@ const Profile: React.FC = () => {
           setEditedCreditCardData(result[0].creditCard);
         }
       }
-
-      console.log(editedAddressData);
-      console.log(editedCreditCardData);
-      console.log(editedSocialData);
-      console.log(editedUserData);
-
     } catch (error) {
       console.error('ERROR fetching personal info:', error);
     }
@@ -171,13 +165,13 @@ const Profile: React.FC = () => {
 
   {/* CREDIT CARD */ }
 
-  const [editedCreditCardData, setEditedCreditCardData] = useState<CreditCard[]>();
+  const [editedCreditCardData, setEditedCreditCardData] = useState<CreditCard>({} as CreditCard);
   const [creditCardEditMode, setCreditCardEditMode] = useState(false);
 
   const handleCreditCardDataChange = (field: string, value: string) => {
-    if (editedUserData) {
-      setEditedUserData({
-        ...editedUserData,
+    if (editedCreditCardData) {
+      setEditedCreditCardData({
+        ...editedCreditCardData,
         [field]: value,
       });
     }
@@ -185,8 +179,8 @@ const Profile: React.FC = () => {
 
   const handleCreditCardSubmit = async () => {
 
-    //const userId = localStorage.getItem('userId') ?? '';
-    //editedCreditCardData.userId = userId;
+    const userId = localStorage.getItem('userId') || sessionStorage.getItem('userId') || '';
+    editedCreditCardData.userId = userId;
 
     try {
       const response = await axios.post(`http://localhost:8080/creditCard`, editedCreditCardData, {
@@ -195,11 +189,19 @@ const Profile: React.FC = () => {
         },
       });
       if (response.status == 200) {
+        setCreditCardEditMode(false);
+        fetchUserData();
         console.log("CORRECTO")
       }
     } catch (error) {
+      setCreditCardEditMode(false);
+      fetchUserData();
       console.error('ERROR submitting data:', error);
     }
+
+    setCreditCardEditMode(false);
+    fetchUserData();
+
   };
 
   const handleCreditCardEdit = () => {
@@ -207,6 +209,7 @@ const Profile: React.FC = () => {
   };
   const handleCreditCardCancelEdit = () => {
     setCreditCardEditMode(false);
+    fetchUserData();
   };
 
   {/* VALIDATION */ }
@@ -541,7 +544,7 @@ const Profile: React.FC = () => {
                   <Grid item xs={12} paddingY={1}>
                     <TextField
                       label="Dirección de facturación"
-                      value={editedUserData?.creditCard?.[0]?.billingAddress}
+                      value={editedCreditCardData.billingAddress}
                       onChange={(e) => handleCreditCardDataChange('billingAddress', e.target.value)}
                       fullWidth
                     />
@@ -549,28 +552,29 @@ const Profile: React.FC = () => {
                   <Grid item xs={12} paddingY={1}>
                     <TextField
                       label="Nombre del propietario"
-                      value={editedUserData?.creditCard?.[0]?.cardHolderName}
+                      value={editedCreditCardData.cardHolderName}
                       onChange={(e) => handleCreditCardDataChange('cardHolderName', e.target.value)}
                       fullWidth />
                   </Grid>
                   <Grid item xs={12} paddingY={1}>
                     <TextField
                       label="Número de la tarjeta"
-                      value={editedUserData?.creditCard?.[0]?.cardNumber}
+                      value={editedCreditCardData.cardNumber}
                       onChange={(e) => handleCreditCardDataChange('cardNumber', e.target.value)}
                       fullWidth />
                   </Grid>
                   <Grid item xs={12} paddingY={1}>
                     <TextField
                       label="CVV"
-                      value={editedUserData?.creditCard?.[0]?.cvv}
+                      value={editedCreditCardData.cvv}
                       onChange={(e) => handleCreditCardDataChange('cvv', e.target.value)}
                       fullWidth />
                   </Grid>
                   <Grid item xs={12} paddingY={1}>
                     <TextField
+                      type='date'
                       label="Fecha de expiración"
-                      value={editedUserData?.creditCard?.[0]?.expirationDate}
+                      value={editedCreditCardData.expirationDate}
                       onChange={(e) => handleCreditCardDataChange('expirationDate', e.target.value)}
                       fullWidth />
                   </Grid>

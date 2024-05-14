@@ -14,9 +14,9 @@ const footerStyles = {
 
 const Footer = () => {
   return (
-    <AppBar position="sticky" style={footerStyles} sx={{ marginTop: 10 }}>
+    <AppBar position="sticky" style={footerStyles}>
       <Toolbar sx={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Grid xs={4} marginInlineStart={10}>
+        <Grid item xs={4} marginInlineStart={10}>
           <IconButton style={{ color: 'white' }}>
             <FontAwesomeIcon icon={faDiscord} style={{ paddingInlineEnd: 15 }} />
           </IconButton>
@@ -31,11 +31,11 @@ const Footer = () => {
           </IconButton>
         </Grid>
 
-        <Grid xs={4} >
+        <Grid item xs={4} >
           <Typography> Copyright © 2023 Game Mania - Todos los derechos reservados </Typography>
         </Grid>
 
-        <Grid xs={4} marginInlineEnd={10} textAlign={"end"}>
+        <Grid item xs={4} marginInlineEnd={10} textAlign={"end"}>
           <List>
             <ListItem>
               <Typography variant="body1"> Terminos y condiciones </Typography>
