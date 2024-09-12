@@ -1,8 +1,9 @@
 import { Avatar, Button, Divider, Drawer, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { CartItem } from '../interfaces/GameInterface';
-import { Remove } from '@mui/icons-material';
+import { Remove, ShoppingBag } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { truncateText } from '../utils/utils';
 
 export const CartContext = createContext<{
     cart: CartItem[];
@@ -28,7 +29,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const cartFromLocalStorage = JSON.parse(localStorage.getItem('cart') || '[]');
     const [cart, setCart] = useState<CartItem[]>(cartFromLocalStorage);
-    const drawerHeight = 300 + cart.length * 80;
+    const [drawerHeight, setDrawerHeight] = useState<number>(300);
     const [isCartOpen, setCartOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -40,9 +41,13 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const updatedCart = cart.filter((item) => item.gameId !== gameId);
         setCart(updatedCart);
         saveCartToLocalStorage(updatedCart);
+        if (updatedCart.length === 0) {
+            setDrawerHeight(300)
+        }
     };
 
     const addToCart = (game: CartItem) => {
+
         const existingGame = cart.find((item) => item.gameId === game.gameId);
 
         if (existingGame) {
@@ -55,6 +60,12 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             const newCart = [...cart, { ...game, quantity: 1 }];
             setCart(newCart);
             saveCartToLocalStorage(newCart);
+        }
+
+        if (cart.length === 0) {
+            setDrawerHeight(drawerHeight + 150);
+        } else if (!existingGame) {
+            setDrawerHeight(drawerHeight + 80);
         }
     };
 
@@ -72,6 +83,15 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const getTotalPrice = () => {
         return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
     };
+
+    const getDiscountedPrice = () => {
+        console.log(cart);
+        return cart.reduce((acc, item) => acc + item.discountedPrice, 0);
+    };
+
+    const getPrice = () => {
+        return cart.reduce((acc, item) => acc + item.price, 0);
+    }
 
     const toggleCart = () => {
         setCartOpen((prevIsCartOpen) => !prevIsCartOpen);
@@ -104,78 +124,89 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             }}
         >
             {children}
-
-            <Drawer
-                open={isCartOpen}
-                onClose={toggleCart}
-                anchor='right'
-                PaperProps={{
-                    sx: {
-                        width: 420,
-                        background: 'white',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: `${drawerHeight}px`,
-                        maxHeight: '100vh',
-                        overflowY: 'auto',
-                    },
-                }}
+            <Drawer open={isCartOpen} onClose={toggleCart} anchor='right' PaperProps={{
+                sx: {
+                    width: 560,
+                    background: 'rgb(41, 41, 41)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: `${drawerHeight}px`,
+                    maxHeight: '100vh',
+                    overflowY: 'auto',
+                    borderLeft: 'solid 0.5px gray',
+                    borderBottom: 'solid gray',
+                    borderBottomLeftRadius: 15,
+                },
+            }}
             >
 
-                <div style={{ textAlign: 'center', margin: '15px' }}>
-                    <h1>Mi cesta ({cart.length})</h1>
-                </div>
+                <Typography alignSelf='center' variant='h3' color={'white'} padding={3}>Mi cesta ({cart.length})</Typography>
 
                 <Divider />
 
-                <List sx={{ flexGrow: 1 }}>
-                    {cart.map((item, index) => (
-                        <div key={index}>
-                            <ListItem>
-                                <ListItemAvatar>
-                                    <Avatar src={item.image} />
-                                </ListItemAvatar>
-                                <ListItemText primary={item.title} />
-                                <Typography variant="h6">{`${item.price}€`}</Typography>
-                                <Typography paddingInlineEnd={2} variant="body1">{`(${item.quantity})`}</Typography>
-                                <Button
-                                    variant="contained"
-                                    color="error"
-                                    style={{
-                                        borderRadius: '50%',
-                                        width: '40px',
-                                        height: '40px',
-                                        minWidth: 'unset',
-                                        minHeight: 'unset',
-                                        padding: '0',
-                                    }}
-                                    onClick={() => removeFromCart(item.gameId)}
-                                >
-                                    <Remove />
-                                </Button>
-                            </ListItem>
-                        </div>
-                    ))}
-                </List>
+                {cart.length > 0 ? (
+                    <>
+                        <Grid>
 
-                <Divider />
+                            <List sx={{ paddingY: 3 }}>
+                                {cart.map((item, index) => (
+                                    <Grid key={index}>
+                                        <ListItem>
+                                            <ListItemAvatar>
+                                                <Avatar src={item.image} />
+                                            </ListItemAvatar>
+                                            <ListItemText primary={truncateText(item.title, 30)} />
+                                            <ListItemText primary={item.platform.name} />
+                                            <Typography variant="h5">{`${item.price}€ `}</Typography>
+                                            <Typography paddingX={2} variant="h6"> x{item.quantity}</Typography>
+                                            <Button
+                                                variant="contained"
+                                                color="error"
+                                                style={{
+                                                    borderRadius: '50%',
+                                                    minWidth: 'unset',
+                                                    minHeight: 'unset',
+                                                    padding: '0',
+                                                }}
+                                                onClick={() => removeFromCart(item.gameId)}
+                                            >
+                                                <Remove />
+                                            </Button>
+                                        </ListItem>
+                                    </Grid>
+                                ))}
+                            </List>
 
-                <Grid container justifyContent="space-between" padding={2}>
-                    <Grid item xs={6}>
-                        <h3>Subtotal:</h3>
-                    </Grid>
-                    <Grid item xs={6} sx={{ textAlign: 'right' }}>
-                        <h3>{getTotalPrice().toFixed(2)}€</h3>
-                    </Grid>
-                </Grid>
+                            <Divider />
 
-                <Grid container justifyContent="center" padding={2}>
-                    <Grid item>
-                        <Button variant="contained" onClick={handleNavigation}> Confirmar Compra </Button>
+                        </Grid>
+                    </>
+                ) : (
+                    <Grid container sx={{ paddingTop: 6, alignContent: 'center', justifyContent: 'center' }}>
+                        <Grid item xs={12} sx={{ textAlign: 'center' }}>
+                            <Typography variant="h5" color="white" padding={2}> Añade objetos al carro </Typography>
+                        </Grid>
                     </Grid>
-                </Grid>
+                )};
+                {cart.length > 0 && (
+                    <Grid item sx={{ marginTop: 'auto', paddingBottom: 2, paddingX: 2 }}>
+                        <Grid item display={'flex'} justifyContent={'space-between'} xs={6}>
+                            <Typography color='white' variant='h5'>Precio oficial: </Typography>
+                            <Typography paddingInlineEnd={9} color='white' variant='h5'>{getPrice().toFixed(2)}€</Typography>
+                        </Grid>
+                        <Grid item display={'flex'} paddingY={2} justifyContent={'space-between'} xs={6}>
+                            <Typography color='white' variant='h5'>Precio rebajado: </Typography>
+                            <Typography paddingInlineEnd={9} color='white' variant='h5'>{getDiscountedPrice().toFixed(2)}€</Typography>
+                        </Grid>
+                        <Grid item display={'flex'} justifyContent={'space-between'} xs={6}>
+                            <Typography color='white' variant='h5'>Subtotal: </Typography>
+                            <Typography paddingInlineEnd={9} color='white' variant='h5'>{getTotalPrice().toFixed(2)}€</Typography>
+                        </Grid>
+                        <Button fullWidth variant="contained" endIcon={<ShoppingBag />} onClick={handleNavigation}> Confirmar Compra </Button>
+                    </Grid>
+                )}
             </Drawer>
-        </CartContext.Provider>
+        </CartContext.Provider >
     );
 }
 

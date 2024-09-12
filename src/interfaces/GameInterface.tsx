@@ -2,6 +2,7 @@ export interface Game {
     gameId: string;
     title: string;
     price: number;
+    discountedPrice: number;
     description: string;
     releaseDate: string;
     numberOfSales: number;
@@ -17,6 +18,7 @@ export interface Game {
 export interface CartItem {
     gameId: string;
     title: string;
+    discountedPrice: number;
     price: number;
     quantity: number;
     platform: Platform;

@@ -40,10 +40,9 @@ const GameList = () => {
 
   return (
     <>
-
       {/* LAST  RELEASE */}
       <Grid item xs={12} sx={{ paddingX: 30, paddingTop: 5 }}>
-        <Typography variant="h4" color="white" fontFamily={'Roboto'} style={{ marginBottom: 20 }}> Ultimos lanzamientos </Typography>
+        <Typography variant="h4" color="white" fontFamily={'Roboto'} style={{ marginBottom: 20 }}> Últimos lanzamientos </Typography>
         <Grid container spacing={12}>
           {lastReleasedGames.map((game, index) => (
             <Grid key={index} item xs={12} sm={6} md={4}>
@@ -141,7 +140,6 @@ const GameList = () => {
                   <Grid container justifyContent="space-between" alignItems="center" color={'white'}>
                     <Typography fontFamily={'Roboto'} variant="h5">
                       {truncateText(game.title, 30)}
-
                     </Typography>
                     <Typography fontFamily={'Roboto'} variant="h5">{`${(game.price - (game.price * (game.discount / 100))).toFixed(2)}€`}</Typography>
                   </Grid>

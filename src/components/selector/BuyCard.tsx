@@ -10,7 +10,7 @@ interface BuyCardProps {
 
 const BuyCard: React.FC<BuyCardProps> = ({ game }) => {
 
-    const [selectedPlatform, setSelectedPlatform] = useState<Platform>(game.platforms[0]);
+    const [selectedPlatform, setSelectedPlatform] = useState<Platform>(game.platforms[0] || 'default');
 
     const { addToCart } = useContext(CartContext);
 
@@ -19,6 +19,7 @@ const BuyCard: React.FC<BuyCardProps> = ({ game }) => {
             gameId: game.gameId,
             title: game.title,
             price: game.price,
+            discountedPrice: game.discountedPrice,
             quantity: 0,
             image: game.image,
             platform: selectedPlatform,
