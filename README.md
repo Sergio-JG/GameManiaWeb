@@ -1,6 +1,4 @@
-# GameManiaAPI
-
-Desarrollo de Aplicaciones WEB - Trabajo de Final de Grado
+# GameMania Web
 
 Concepto : Página E-Commerce de Videojuegos
 
