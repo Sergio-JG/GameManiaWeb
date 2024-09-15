@@ -13,5 +13,4 @@ TECNOLOGIAS:
   - Font Awesome
     
 CAPTURAS:
-
-![Gamemania](https://github.com/Sergio-JG/GameManiaWeb/assets/97886835/0570fe50-a72a-4db8-bea9-df4536550b4f)
+![Gamemania](https://github.com/user-attachments/assets/4d8c9efb-826a-42bb-b330-86419b7fa799)
